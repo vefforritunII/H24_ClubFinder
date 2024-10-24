@@ -6,4 +6,4 @@
 
 # Wireframe
 
-![wireframe](https://github.com/user-attachments/assets/714f8b46-bc68-4589-a725-4a57c65d4bba)
+![wireframe](https://github.com/user-attachments/assets/d96f5139-6b65-49ef-bb0f-a4d7a0efbe36)
