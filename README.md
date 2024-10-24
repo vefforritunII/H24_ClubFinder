@@ -2,6 +2,8 @@
 
 # Lýsing
 
+Þú getur notað þetta forrit til að finna aðra sem hafa svipaðan áhuga og þinn eins og tölvuleiki, íþróttir og borðspil. Þetta app er gert fyrir notendur sem vilja tilheyra samfélagi þar sem þeir deila allir sama áhuga á ákveðnum hlut og gera það reglulega.
+
 # User stories
 
 # Wireframe
