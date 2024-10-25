@@ -15,3 +15,5 @@ Hektor langaði að finna fólk sem gætu spilað með honum og tveimur vinum ha
 # Wireframe
 
 ![wireframe](https://github.com/user-attachments/assets/d96f5139-6b65-49ef-bb0f-a4d7a0efbe36)
+
+![theshit](https://github.com/user-attachments/assets/8e7818b2-e5c1-4ab5-9f0b-0c62a4f08f0d)
