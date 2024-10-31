@@ -12,6 +12,11 @@ Tómas var að kaupa sér nýjan frisbídisk því hann hafði áhuga á frisbí
 Hektor langaði að finna fólk sem gætu spilað með honum og tveimur vinum hans DND. Þá sagði einn af vinum hans að þau ættu að nota Club scout til að búa til hóp og sjá hvort einhver vildi koma og spila með þeim. Tveir aðilar höfðu samband, Íris og Filip, og spurðu hvort þau gætu spila því þau vildu læra að spila DND. Vinahópurinn tók vel í að þau væru með og byrjuðu að skipuleggja hvenær þau gætu hist.
 
 3. **Ég heiti Daníel og  ég er endurskoðandi og það verður leiðinlegt í starfi mínu, svo ég spila tölvuleiki í frítíma mínum og ég hef mjög gaman af rainbow six siege. En ég spila einn og ég vil finna aðra til að spila með og eignast nýja vini. Mig langar í eitthvað sem hjálpar mér að finna aðra sem líkar við rainbow six siege og þá gæti ég spilað með þeim og mögulega eignast nýja vini.**
+
+# web stack
+
+**Við ætlum að nota next.js vegna þess að það er allt-í-einn ramma og það er auðveldara í notkun en react.js. Við ætlum að nota Supa Base fyrir gagnagrunninn okkar vegna þess að það er auðveldara og það er almennt notaður gagnagrunnur**
+
 # Wireframe
 
 ![wireframe](https://github.com/user-attachments/assets/d96f5139-6b65-49ef-bb0f-a4d7a0efbe36)
