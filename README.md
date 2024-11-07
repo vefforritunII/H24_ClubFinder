@@ -15,7 +15,7 @@ Hektor langaði að finna fólk sem gætu spilað með honum og tveimur vinum ha
 
 # web stack
 
-**Við ætlum að nota next.js vegna þess að það er allt-í-einn ramma og það er auðveldara í notkun en react.js. Við ætlum að nota Supa Base fyrir gagnagrunninn okkar vegna þess að það er auðveldara og það er almennt notaður gagnagrunnur**
+**Við ætlum að nota next.js til að búa til allt í forritinu okkar vegna þess að next.js er allt-í-einn rammi þannig að við getum bara notað next.js til að gera allt, er búið að gera eitthvað fyrir okkur og það er vinsælt svo það gæti hjálpað okkur í framtíðinni. Við ætlum að nota Supa Base fyrir gagnagrunninn okkar vegna þess að það er auðveldara og það er almennt notað fyrir gagnagrunna og við ætlum að hafa gögn um notandann eins og notandanafn, lykilorð, kjörstillingar og tölvupóst o.s.frv. og einnig hafa klúbba eins og nafn, eiganda, meðlimir og flokkar**
 
 # Wireframe
 
