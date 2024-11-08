@@ -1,0 +1,48 @@
+{
+    "proflies":[
+                    {
+                        "id":"p1",
+                        "name":"Bob",
+                        "pass":"password",
+                        "email":"bob@gmail.com",
+                        "clubs":["c2","c3"]
+                    },
+                    {
+                        "id":"p2",
+                        "name":"Emma",
+                        "pass":"password",
+                        "email":"emma@gmail.com",
+                        "clubs":["c1","c3"]
+                    },
+                    {
+                        "id":"p3",
+                        "name":"Aron",
+                        "pass":"password",
+                        "email":"aron@gmail.com",
+                        "clubs":["c1","c2"]
+                    }
+                ],
+    "clubs":[
+        {
+            "id":"c1",
+            "name":"dnd club",
+            "disc":"we love playing dnd",
+            "logo":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSp6z4Z9bFQCIuZVAcwwbibfkbSbfRtZ4-Ynw&s",
+            "madeDate":"05/11/2024"
+        },
+        {
+            "id":"c2",
+            "name":"Bóka klúb",
+            "disc":"við erum ormar",
+            "logo":"https://i0.wp.com/www.parentingcottage.org/wp-content/uploads/2023/05/Bookworm.png?resize=310%2C267&ssl=1",
+            "madeDate":"05/30/2024"
+        },
+        {
+            "id":"c3",
+            "name":"best dnd place",
+            "disc":"við erum svakalgir",
+            "logo":"https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSRghqTcpmjKcSEVcQdLccn6MfeNoZN78q8Mw&s",
+            "madeDate":"05/12/2024"
+        }
+    ]
+}
