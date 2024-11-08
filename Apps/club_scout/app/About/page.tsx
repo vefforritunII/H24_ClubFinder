@@ -1,5 +1,6 @@
 export default function Page() {
     return (
-        <h1>profile</h1>
+        <h1>about us</h1>
     );
 }
+
