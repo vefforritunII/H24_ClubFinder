@@ -1,6 +1,0 @@
-jhdhioðqewihðoiðoijðo
-
-
-asdasdasd
-
-asdasd
