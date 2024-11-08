@@ -6,8 +6,8 @@ export async function sign_up(formdata: FormData){
         password: formdata.get("password"),
         passwordCheck: formdata.get("passwordCheck")
     }
-
-    console.log("VIRKAR!!!",signUpData)
+    const json_data = await fetch('/stuff.json')
+    console.log(json_data)
 
     if (signUpData.password === signUpData.passwordCheck) {
         // setja gögnin in supabase or redirecta til main page
