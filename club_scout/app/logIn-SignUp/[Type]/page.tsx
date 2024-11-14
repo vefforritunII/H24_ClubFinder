@@ -1,8 +1,9 @@
 import { sign_up,sign_in } from "@/app/library/actions" //þarf ekki .tsx
+import { redirect } from "next/navigation"
 
 export function Form(props :{type: string}){
   const {type} = props
-  if (type==="log in"){
+  if (type==="log_in"){
     return(
       <form style={{margin: "auto",width: "50%", textAlign: "center"}} action={sign_in}>
         
@@ -17,7 +18,7 @@ export function Form(props :{type: string}){
       </form>
     )
   }
-  else {
+  else if (type==="sign_up"){
     return(
       <form style={{margin: "auto",width: "50%", textAlign: "center"}} action={sign_up}>
 
@@ -35,15 +36,19 @@ export function Form(props :{type: string}){
       </form>
     )
   }
+  else{
+    console.log("fail")
+    redirect("/")
+  }
   
 }
-// TEST TEST
-export default function Page(){//make it so it takes in a prop and uses it to define the Form
+
+export default async function Page({params}: {params: Promise<{Type:string}>}){
+  const type = (await params).Type//nafnið af þetta og nafnið á dynamic route þarf að vera eins
   return (
     <div>
-      <h1>THIS IS A TEST</h1>
-      <Form type="log in" />
-      <Form type=""/>
+      <h1>ClubScout</h1>
+      <Form type={type} />
     </div>
 )
 }

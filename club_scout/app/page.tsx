@@ -1,14 +1,14 @@
-//Home Page
+//main page
+
 import Link from "next/link"
 import styles from "./page.module.css"  // Adjust path as necessary
 
-export default function Page() {
+export default function Page(){
     return (
         <div>
-            <Link href="/logIn-SignUp" className={styles.link}>Login/SignUp</Link>
-            <Link href="/About" className={styles.link}>About</Link>
-            <Link href="/Club" className={styles.link}>Club</Link>
-            <Link href="/profile" className={styles.link}>Profile</Link>
+            <Link href={"/logIn-SignUp/log_in"}>Login</Link>
+            <br />
+            <Link href={"/logIn-SignUp/sign_up"}>SignUp</Link>
         </div>
     )
 }
