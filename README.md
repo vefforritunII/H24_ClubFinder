@@ -18,7 +18,5 @@ Hektor langaði að finna fólk sem gætu spilað með honum og tveimur vinum ha
 **Við ætlum að nota next.js til að búa til allt í forritinu okkar vegna þess að next.js er allt-í-einn rammi þannig að við getum bara notað next.js til að gera allt, er búið að gera eitthvað fyrir okkur og það er vinsælt svo það gæti hjálpað okkur í framtíðinni. Við ætlum að nota Supa Base fyrir gagnagrunninn okkar vegna þess að það er auðveldara og það er almennt notað fyrir gagnagrunna og við ætlum að hafa gögn um notandann eins og notandanafn, lykilorð, kjörstillingar og tölvupóst o.s.frv. og einnig hafa klúbba eins og nafn, eiganda, meðlimir og flokkar**
 
 # Wireframe
+![wireframe-png](https://github.com/user-attachments/assets/cc82ae83-0e6e-4b2d-a4fd-ad184b973c53)
 
-![wireframe](https://github.com/user-attachments/assets/d96f5139-6b65-49ef-bb0f-a4d7a0efbe36)
-
-![theshit](https://github.com/user-attachments/assets/8e7818b2-e5c1-4ab5-9f0b-0c62a4f08f0d)
