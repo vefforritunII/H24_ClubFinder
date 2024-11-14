@@ -42,12 +42,12 @@ export function Form(props :{type: string}){
   }
   
 }
-// TEST TEST
+
 export default async function Page({params}: {params: Promise<{Type:string}>}){
   const type = (await params).Type//nafnið af þetta og nafnið á dynamic route þarf að vera eins
   return (
     <div>
-      <h1>THIS IS A TEST</h1>
+      <h1>ClubScout</h1>
       <Form type={type} />
     </div>
 )

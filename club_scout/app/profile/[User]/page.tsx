@@ -16,7 +16,7 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
     }
 
     
-    else if(cookie.has("haveSignedIn") && cookie.get("haveSignedIn")?.value == userData.name){// þarf "?" dunno why
+    else if(cookie.has("haveSignedIn") && cookie.get("haveSignedIn")?.value == userData.name){// þarf "?"
         return(
             <div>
                 <h2>velkominn!</h2>
