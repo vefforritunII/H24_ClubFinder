@@ -37,16 +37,18 @@ export function Form(props :{type: string}){
     )
   }
   else{
-    redirect('/../..')
+    console.log("fail")
+    redirect("/")
   }
   
 }
 // TEST TEST
-export default function Page(props: {type:string}){//make it so it takes in a prop and uses it to define the Form
+export default async function Page({params}: {params: Promise<{Type:string}>}){
+  const type = (await params).Type//nafnið af þetta og nafnið á dynamic route þarf að vera eins
   return (
     <div>
       <h1>THIS IS A TEST</h1>
-      <Form type={props.type} />
+      <Form type={type} />
     </div>
 )
 }
