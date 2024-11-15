@@ -1,0 +1,70 @@
+/* Correct CSS Module scoping */
+
+:root {
+  --circle-size: 40px;
+  --circle-bg: #ccc;
+  --header-bg: #fff;
+  --header-shadow: rgba(0, 0, 0, 0.1) 0px 4px 6px;
+}
+
+/* Local class for header */
+.header {
+  position: sticky;
+  top: 0;
+  width: 100%;
+  background-color: var(--header-bg);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 20px;
+  box-shadow: var(--header-shadow);
+  z-index: 1000;
+}
+
+/* Local class for left side */
+.left,
+.right {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Local class for center (search bar) */
+.center {
+  flex: 1;
+  display: flex;
+  justify-content: center;
+}
+
+/* Local class for the search bar */
+.searchBar {
+  width: 100%;
+  max-width: 400px;
+  padding: 8px 12px;
+  border-radius: 20px;
+  border: 1px solid #ccc;
+  font-size: 16px;
+}
+
+/* Local class for menu circle */
+.menuCircle, .profileCircle {
+  width: var(--circle-size);
+  height: var(--circle-size);
+  border-radius: 50%;
+  background-color: var(--circle-bg);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Hover effect for the circles */
+.menuCircle:hover, .profileCircle:hover {
+  background-color: #aaa;
+}
+
+/* Mobile responsiveness */
+@media (max-width: 600px) {
+  .searchBar {
+    width: 80%;
+  }
+}
