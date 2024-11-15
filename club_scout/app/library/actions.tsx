@@ -86,4 +86,24 @@ export async function getUserData(user:string){
         }
     }
 }
+export async function getAllClubsData(){
+    // sækjir json data 
+    const file = await fs.readFile(process.cwd() + '/app/library/stuff.json', 'utf8');
+    const data = JSON.parse(file);
+
+    return data.clubs
+}
+
+export async function getClubData(club:string){
+    // sækjir json data 
+    const file = await fs.readFile(process.cwd() + '/app/library/stuff.json', 'utf8');
+    const data = JSON.parse(file);
+
+    // reynir að finna gögn af club'ið með nafnið og svo returna gögnin
+    for (let x of data.clubs){
+        if (x.name == club){
+            return x
+        }
+    }
+}
 
