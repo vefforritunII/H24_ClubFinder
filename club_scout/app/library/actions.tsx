@@ -100,8 +100,9 @@ export async function getClubData(club:string){
     const data = JSON.parse(file);
 
     // reynir að finna gögn af club'ið með nafnið og svo returna gögnin
-    for (let x of data.clubs){
-        if (x.name == club){
+    for (let x of data.clubs){        
+        if (x.id == club){
+            
             return x
         }
     }
