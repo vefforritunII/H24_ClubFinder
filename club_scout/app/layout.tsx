@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import Header from "./components/Header"; // Adjust the path based on your folder structure
+import Header from "./components/Sidebar"; // Adjust the path based on your folder structure
 import "./globals.css";
 
 const geistSans = localFont({
