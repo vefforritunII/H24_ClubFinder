@@ -1,7 +1,6 @@
 import { getClubData } from "@/app/library/actions"
 
 export default async function Club({params}:{params:Promise<{Club:string}>}) {
-
     const club = (await params).Club
 
     const dataOfClub = await getClubData(Number(club))
