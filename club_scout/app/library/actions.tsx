@@ -1,5 +1,7 @@
 "use server";
 
+import { supabase } from "@/app/library/supabaseClients";
+
 import {promises as fs } from "fs"
 import { redirect } from "next/navigation"
 import { cookies } from 'next/headers'
@@ -12,25 +14,19 @@ export async function sign_up(formdata: FormData){
         password: formdata.get("password"),
         passwordCheck: formdata.get("passwordCheck")
     }
-
-    // sækja json gögn (mun breyta til supabase á eftir)
-    const file = await fs.readFile(process.cwd() + '/app/library/stuff.json', 'utf8');
-    const data = JSON.parse(file);
     
     // ká ef password og passwordCheck eru eins og svo búa til nýja profile
-    if (signUpData.password === signUpData.passwordCheck) {
-        
-        const id = data.profiles.length
-        data.profiles.push({
-            id: "p"+String(id+1),
-            name: signUpData.username,
-            pass: signUpData.password,
-            email: "",
-            clubs: []
+    if (signUpData.password === signUpData.passwordCheck && String(signUpData.username).length >= 8) {
 
-        })
-        //skrifa nýja profile í json
-        fs.writeFile(process.cwd() + '/app/library/stuff.json',JSON.stringify(data))
+        const { error } = await supabase
+        .from('profiles')
+        .insert([
+          { user_name: signUpData.username, password: signUpData.password, email:"", },
+        ])
+
+        if (error){
+            console.log("ERROR, í sign up:",error)
+        }
         
     }
     else{
@@ -42,21 +38,27 @@ export async function sign_up(formdata: FormData){
 
 export async function sign_in(formdata:FormData) {
 
-    // sækja json gögn (mun breyta til supabase á eftir)
-    const file = await fs.readFile(process.cwd() + '/app/library/stuff.json', 'utf8');
-    const data = JSON.parse(file);
-
     // sækja sign in form gögn
     const signInData = {
         username: formdata.get("username"),
         password: formdata.get("password"),
     }
-    // checka ef username og password eru strings til að double checka svo reynir að finna notandan profile'ið og redirect-a profile'ið
+    // checka ef username og password eru strings svo reynir að finna notandan profile'ið og redirect-a til profile síðan
     if (typeof signInData.username === 'string' && typeof signInData.password === 'string'){
 
-        for (let x of data.profiles){
-            if (x.name == signInData.username && x.pass == signInData.password){
-               (await cookies()).set("haveSignedIn",x.name)
+        // sækjir supabase gögn af profiles
+        const { data, error } = await supabase
+        .from('profiles')
+        .select()
+
+        if (error){
+            console.log("ERROR í log in:",error)
+        }
+        
+        for (let x of data){
+            console.log(x)
+            if (x.user_name == signInData.username && x.password == signInData.password){
+               (await cookies()).set("haveSignedIn",x.user_name)
                 redirect("/profile/"+signInData.username)//má líka vera id
             }
         }
@@ -76,35 +78,58 @@ export async function signOut() {
 
 // sækjir gögn af notandan
 export async function getUserData(user:string){
-    // sækjir json data 
-    const file = await fs.readFile(process.cwd() + '/app/library/stuff.json', 'utf8');
-    const data = JSON.parse(file);
+
+    // sækjir supabase gögn af profiles
+    const { data, error } = await supabase
+    .from('profiles')
+    .select()
+
+    if (error){
+        console.log("ERROR í getUserData:",error)
+    }
+
     // reynir að finna profile'ið notandan's og svo returna gögnin
-    for (let x of data.profiles){
-        if (x.name == user){
+    for (let x of data){
+        if (x.user_name == user){
             return x
         }
     }
 }
 export async function getAllClubsData(){
-    // sækjir json data 
-    const file = await fs.readFile(process.cwd() + '/app/library/stuff.json', 'utf8');
-    const data = JSON.parse(file);
 
-    return data.clubs
+    // sækjir supabase gögn af clubs
+    const { data, error } = await supabase
+    .from('clubs')
+    .select()
+
+    if (error){
+        console.log("ERROR í getAllClubsData:",error)
+    }
+
+    return data
 }
 
-export async function getClubData(club:string){
-    // sækjir json data 
-    const file = await fs.readFile(process.cwd() + '/app/library/stuff.json', 'utf8');
-    const data = JSON.parse(file);
+export async function getClubData(clubID:number){
+        // sækjir supabase gögn af clubs
+        const { data, error } = await supabase
+        .from('clubs')
+        .select()
+    
+        if (error){
+            console.log("ERROR í getClubData:",error)
+        }
 
     // reynir að finna gögn af club'ið með nafnið og svo returna gögnin
-    for (let x of data.clubs){        
-        if (x.id == club){
-            
+    for (let x of data){        
+        if (x.id == clubID){      
             return x
         }
     }
 }
 
+export async function getMembers() {
+    const { data, error } = await supabase
+    .from('club_members')
+    .select()
+    return data
+}
