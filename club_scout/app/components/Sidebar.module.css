@@ -12,11 +12,15 @@
   flex-direction: column;
   padding: 20px;
 }
-
+.h1 {
+  font-size: 25px;
+  ;
+}
 .sidebarLinks {
   list-style: none;
   padding: 0;
   margin: 0;
+  flex-grow: 1; /* Allow the list to take up remaining space */
 }
 
 .sidebarLinks li {
@@ -27,6 +31,19 @@
   text-decoration: none;
   color: #333;
   font-size: 18px;
+}
+
+/* Profile Link container at the bottom */
+.profileContainer {
+  margin-top: auto; /* Push this to the bottom */
+  padding-top: 20px; /* Space from the rest of the content */
+}
+
+.profileContainer a {
+  text-decoration: none;
+  color: #333;
+  font-size: 18px;
+  margin-top: 20px;
 }
 
 /* Adjust page content to account for the static sidebar */
