@@ -2,14 +2,17 @@
 
 import React from 'react';
 import styles from './Sidebar.module.css'; // Import the CSS module
+import Link from 'next/link';
 
 const StaticSidebar = () => {
   return (
     <div className={styles.sidebar}>
       <ul className={styles.sidebarLinks}>
-        <li><a href="#home">Home</a></li>
-        <li><a href="#discover">Discover</a></li>
-        <li><a href="#about">About</a></li>
+        <li><Link href="/" className={styles.link}>Home</Link></li>
+        <li><Link href="/Club" className={styles.link}>Discover</Link></li>
+        <li><Link href="" className={styles.link}>Your Clubs</Link></li>
+        <li><Link href="" className={styles.link}>Messages</Link></li>
+        <li><Link href="/About" className={styles.link}>About</Link></li>
       </ul>
     </div>
   );
