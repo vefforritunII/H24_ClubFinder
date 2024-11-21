@@ -13,13 +13,6 @@ const StaticSidebar = () => {
 
   return (
     <div>
-      {/* Hamburger Menu Icon */}
-      <div className={styles.hamburger} onClick={toggleSidebar}>
-        <div></div>
-        <div></div>
-        <div></div>
-      </div>
-
       {/* Sidebar */}
       <div className={`${styles.sidebar} ${isOpen ? styles.open : ''}`}>
         <ul className={styles.sidebarLinks}>
@@ -35,9 +28,18 @@ const StaticSidebar = () => {
           <Link href="/profile/User" className={styles.link}>Profile</Link>
         </div>
       </div>
+
+      {/* Hamburger Menu Icon */}
+      <div
+        className={`${styles.hamburger} ${isOpen ? styles.open : ''}`}
+        onClick={toggleSidebar}
+      >
+        <div></div>
+        <div></div>
+        <div></div>
+      </div>
     </div>
   );
 };
 
 export default StaticSidebar;
-

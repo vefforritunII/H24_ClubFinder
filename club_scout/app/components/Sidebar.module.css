@@ -51,7 +51,6 @@
 /* Adjust page content to account for the static sidebar */
 body {
   margin-left: 250px; /* Ensure the main content isn't hidden behind the sidebar */
-  transition: margin-left 0.3s ease-in-out; /* Smooth transition */
 }
 
 /* Responsive Design */
@@ -65,20 +64,20 @@ body {
   }
 
   body {
-    margin-left: 0; /* Remove default left margin */
-  }
-
-  .bodyContent.open {
-    margin-left: 250px; /* Shift body content to the right when sidebar is open */
+    margin-left: 0; /* Allow body content to take full width on mobile */
   }
 
   .hamburger {
-    display: block; /* Show hamburger icon on mobile */
-    cursor: pointer;
     position: fixed;
-    top: 20px; /* Position it above the sidebar */
-    left: 20px; /* Give some space from the left edge */
-    z-index: 1200; /* Ensure it stays above other elements */
+    top: 20px; /* Position it aligned with the sidebar */
+    left: 20px; /* Start position (aligned with the hidden sidebar) */
+    z-index: 1200; /* Ensure it stays above the sidebar */
+    transition: left 0.3s ease-in-out; /* Animate its movement */
+    cursor: pointer;
+  }
+
+  .sidebar.open + .hamburger {
+    left: 190px; /* Move the hamburger along with the sidebar (sidebar width + margin) */
   }
 
   .hamburger div {
@@ -87,9 +86,5 @@ body {
     background-color: #333;
     margin: 6px 0;
     transition: all 0.3s ease;
-  }
-
-  .sidebarLinks {
-    flex-grow: 0; /* Prevent sidebar content from stretching */
   }
 }
