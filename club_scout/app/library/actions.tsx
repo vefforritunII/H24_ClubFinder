@@ -98,6 +98,31 @@ export async function getUserData(user:string){
         }
     }
 }
+
+export async function joinClub(formdata: FormData){
+
+    const club_id = formdata.get("club_id")
+
+    const cookie = await cookies()
+
+    if (!cookie.has("haveSignedIn")){
+        redirect("/logIn-SignUp/log_in")
+    }
+    else{
+        const user = await getUserData(cookie.get("haveSignedIn")?.value)//ignore þetta
+
+        const { error } = await supabase
+        .from('club_members')
+        .insert([
+          { profile_id:user.id,club_id:club_id },
+        ])
+
+        if (error){
+            console.log("ERROR, í sign up:",error)
+        }
+    }
+}
+
 export async function getAllClubsData(){
 
     // sækjir supabase gögn af clubs

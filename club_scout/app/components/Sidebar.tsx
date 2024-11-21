@@ -17,7 +17,7 @@ const StaticSidebar = () => {
       </ul>
       {/* Profile Link at the bottom */}
       <div className={styles.profileContainer}>
-        <Link href="/profile/User" className={styles.link}>Profile</Link>
+        <Link href="/profile/User" className={styles.link}>Profile</Link> {/*þarf að laga þetta, mun gera á eftir @lukasGrig*/}
       </div>
     </div>
   );

@@ -1,4 +1,4 @@
-import { getClubData } from "@/app/library/actions"
+import { getClubData,joinClub } from "@/app/library/actions"
 import { cookies } from "next/headers"
 
 export default async function Club({params}:{params:Promise<{Club:string}>}) {
@@ -6,13 +6,14 @@ export default async function Club({params}:{params:Promise<{Club:string}>}) {
     const club = (await params).Club
     const cookie = await cookies()
     const dataOfClub = await getClubData(Number(club))
+    let join_text = "Log in to join!"// má ekki setja þetta í else{} því það mun "ekki finna join_text"
 
-    console.log(cookie.has("haveSignedIn"))
     if (cookie.has("haveSignedIn")){
-        console.log(cookie.getAll())
+        join_text = "Join"
     }
+    
 
-
+    console.log(dataOfClub)
     return(
         <div>
             <h1>Velkominn til {dataOfClub.name}</h1>
@@ -21,7 +22,11 @@ export default async function Club({params}:{params:Promise<{Club:string}>}) {
 
             <p>This club was made in {dataOfClub.created_at.split("T")[0]}</p>
 
-            <button>{}</button>
+            <form action={joinClub}>{/* notar server side */}
+                <input style={{display:"none"}} name="club_id" value={dataOfClub.id} />
+                <button type="submit">{join_text}</button>
+            </form>
+
         </div>
     )
     
