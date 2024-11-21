@@ -12,7 +12,7 @@ export default async function Page() {
         renderedClubs.push(memberOfClubs(x.name,x.description,x.img,x.id))
     }
 
-    console.log(clubs)
+    // console.log(clubs) // ef þarf að sjá gögn um clubs
 
     return (
         <div>

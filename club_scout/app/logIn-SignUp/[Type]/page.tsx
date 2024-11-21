@@ -1,8 +1,11 @@
 import { sign_up,sign_in } from "@/app/library/actions" //þarf ekki .tsx
 import { redirect } from "next/navigation"
+import { cookies } from "next/headers"
 
 export function Form(props :{type: string}){
+
   const {type} = props
+
   if (type==="log_in"){
     return(
       <form style={{margin: "auto",width: "50%", textAlign: "center"}} action={sign_in}>
@@ -44,7 +47,14 @@ export function Form(props :{type: string}){
 }
 
 export default async function Page({params}: {params: Promise<{Type:string}>}){
+
   const type = (await params).Type//nafnið af þetta og nafnið á dynamic route þarf að vera eins
+  const cookie = await cookies()
+
+  if (cookie.has("haveSignedIn")){
+    redirect("/profile/"+cookie.get("haveSignedIn")?.value)
+  }
+
   return (
     <div>
       <h1>ClubScout</h1>

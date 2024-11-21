@@ -43,6 +43,9 @@ export async function sign_in(formdata:FormData) {
         username: formdata.get("username"),
         password: formdata.get("password"),
     }
+
+    const cookie = await cookies()
+
     // checka ef username og password eru strings svo reynir að finna notandan profile'ið og redirect-a til profile síðan
     if (typeof signInData.username === 'string' && typeof signInData.password === 'string'){
 
