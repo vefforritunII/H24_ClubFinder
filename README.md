@@ -20,3 +20,12 @@ Hektor langaði að finna fólk sem gætu spilað með honum og tveimur vinum ha
 # Wireframe
 ![wireframe-png](https://github.com/user-attachments/assets/cc82ae83-0e6e-4b2d-a4fd-ad184b973c53)
 
+# Data Base
+
+**Data basið er allt hannað í kringum profiles og þeirra ID. Það er notað það til að linka næstum öll tables saman. það eru til tvö "revrence tables" og þau eru næstum því hönnuð eins og listi með proflie ID og ID sem það er í svo er 
+léttara að revrenca hvern part og með hvað**
+
+![Skjámynd 2024-11-21 104537](https://github.com/user-attachments/assets/abb9b6b1-a286-47f7-afca-e02f993d2f20)
+
+
+
