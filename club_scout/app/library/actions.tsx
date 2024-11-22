@@ -4,7 +4,9 @@ import { supabase } from "@/app/library/supabaseClients";
 
 import {promises as fs } from "fs"
 import { redirect } from "next/navigation"
+import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers'
+import memberOfClubs from "../components/profileMemberClubs";
 
 
 export async function sign_up(formdata: FormData){
@@ -99,17 +101,18 @@ export async function getUserData(user:string){
     }
 }
 
-export async function joinClub(formdata: FormData){
+export async function joinOrLeaveClub(formdata: FormData){
 
     const club_id = formdata.get("club_id")
+    const type = formdata.get("type")
 
     const cookie = await cookies()
+    const user = await getUserData(cookie.get("haveSignedIn")?.value)//ignore þetta
 
     if (!cookie.has("haveSignedIn")){
         redirect("/logIn-SignUp/log_in")
     }
-    else{
-        const user = await getUserData(cookie.get("haveSignedIn")?.value)//ignore þetta
+    else if (type == "join"){
 
         const { error } = await supabase
         .from('club_members')
@@ -120,7 +123,39 @@ export async function joinClub(formdata: FormData){
         if (error){
             console.log("ERROR, í sign up:",error)
         }
+
+        // refresh-a síðan hjá notandinn og redirect-a til síðan til að double checka
+        revalidatePath("/Club/"+club_id)
+        redirect("/Club/"+club_id)
+
     }
+    else if (type=="leave"){
+
+        const {error} = await supabase.from('club_members').delete().eq("profile_id",user.id).eq("club_id",club_id)
+
+        if (error){
+            console.log("ERROR: í joinOrLeaveClub þegar reyna að leave-a club, info:",error)
+        }
+
+        // refresh-a síðan hjá notandinn og redirect-a til síðan til að double checka
+        revalidatePath("/Club/"+club_id)
+        redirect("/Club/"+club_id)
+    }
+    else{
+        console.log("ERROR: í joinOrLeaveClub, enginn statements voru keyrið")
+    }
+}
+
+export async function listOfMembersOfClubs(user_id:Number){
+    const members = await getMembers()
+    let lists = []
+
+    for (let x of members){
+        if (user_id == x.profile_id){
+            lists.push(x.club_id)
+        }
+    }
+    return lists
 }
 
 export async function getAllClubsData(){

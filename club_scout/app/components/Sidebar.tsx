@@ -16,7 +16,7 @@ const StaticSidebar = () => {
         <li><Link href="/About" className={styles.link}>About</Link></li>
       </ul>
       {/* Profile Link at the bottom */}
-      <div className={styles.profileContainer}>
+      <div className={styles.profileContainer}> {/* þarf að breyta þetta part til server component og svo bætt í client component til að profile link til að virka rétt */}
         <Link href="/profile/User" className={styles.link}>Profile</Link> {/*þarf að laga þetta, mun gera á eftir @lukasGrig*/}
       </div>
     </div>
