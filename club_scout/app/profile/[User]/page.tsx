@@ -1,8 +1,8 @@
-import { getUserData,signOut,getAllClubsData,getMembers} from "@/app/library/actions"
+import { getUserData,signOut,getAllClubsData,listOfMembersOfClubs} from "@/app/library/actions"
 import { Suspense } from "react"
 import { cookies } from 'next/headers'
 import { redirect } from "next/navigation"
-import  memberOfClubs  from "@/app/components/profileMemberClubs"
+import  clubsInfo  from "@/app/components/profileMemberClubs"
 
 
 export default async function Page({params}: {params:Promise<{User:string}>}){
@@ -12,7 +12,8 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
     const userData = await getUserData(user)
     const allClubs = await getAllClubsData()
     const cookie = await cookies()
-    const members = await getMembers()
+    const memberOfClubs = await listOfMembersOfClubs(Number(userData.id))
+
     let listOfClubs = []
 
     // ef ekki með cookie eða ekki með rétt cookie
@@ -22,20 +23,27 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
 
     
     else if(cookie.has("haveSignedIn") && cookie.get("haveSignedIn")?.value == userData.user_name){// þarf "?"
-        // mun breyta á eftir þarf að gera user
-        // þarf lista af clubs sem notandinn er í
         
         // sækjir clubs sem notandinn er members of
+        for (let x of memberOfClubs){
+            for (let i of allClubs){
+                if (i.id === x){
+                    listOfClubs.push(clubsInfo(i.name,i.description,i.img,x))
+                }
+            }
+        }
+
+        /* // old code
         for (let x of members){
             if (userData.id === x.profile_id){
                 for (let i of allClubs){
                     if (i.id === x.id){
-                        listOfClubs.push(memberOfClubs(i.name,i.description,i.img,x.club_id))
+                        listOfClubs.push(clubsInfoOfMember(i.name,i.description,i.img,x.club_id))
                     }
                 }
                 
             }
-        }
+        }*/
 
         
         return(
