@@ -18,6 +18,8 @@ export function Form(props :{type: string}){
 
         <button type="submit">Sign in</button>
 
+        <p>Don't have an account? <a href="/logIn-SignUp/sign_up">Sign up</a></p> {/* Link to sign-up */}
+
       </form>
     )
   }
@@ -35,6 +37,8 @@ export function Form(props :{type: string}){
         <input id="passwordCheck" name="passwordCheck" required></input>
 
         <button type="submit">Sign up</button>
+
+        <p>Already have an account? <a href="/logIn-SignUp/log_in">Log in</a></p> {/* Link to log-in */}
 
       </form>
     )
