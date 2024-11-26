@@ -21,7 +21,7 @@ const StaticSidebar = () => {
           <li><Link href="/Club" className={styles.link}>Discover</Link></li>
           <li><Link href="" className={styles.link}>Your Clubs</Link></li>
           <li><Link href="" className={styles.link}>Messages</Link></li>
-          <li><Link href="/About" className={styles.link}>About</Link></li>
+          <li><Link href="/About" className={styles.link}>About us</Link></li>
         </ul>
         {/* Profile Link at the bottom */}
         <div className={styles.profileContainer}>

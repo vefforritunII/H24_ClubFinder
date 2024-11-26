@@ -1,3 +1,4 @@
+//home page
 import styles from "./page.module.css"; // Adjust path if necessary
 
 export default function Page() {
@@ -14,7 +15,7 @@ export default function Page() {
                 </div>
 
                 {/* Discover Button */}
-                <div className={styles.ctas}>
+                <div className={styles.takki}>
                     <a className={styles.primary} href="/Club">Discover Hobbies</a>
                 </div>
             </div>
