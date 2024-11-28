@@ -1,24 +1,29 @@
-//Club eða discovery page
-import { getAllClubsData } from "@/app/library/actions";
-import  memberOfClubs  from "@/app/components/profileMemberClubs"
+"use client"; 
 
-export default async function Page() {
+import { useState, useEffect } from "react";
+import { getAllClubsData } from "@/app/library/actions"; // sækir öll Clubs
+import memberOfClubs from "@/app/components/profileMemberClubs"; // Component til að birta upplýsingar um Clubs
 
-    const clubs = await getAllClubsData()
+export default function Page() {
+    const [clubs, setClubs] = useState([]); // Til að geyma listann af Clubs
+    const [searchTerm, setSearchTerm] = useState(""); // Til að geyma search-ið sem notandi slær inn
 
-    let renderedClubs = []
-
-    for (let x of clubs){
-        renderedClubs.push(memberOfClubs(x.name,x.description,x.img,x.id))
-    }
-
-    // console.log(clubs) // ef þarf að sjá gögn um clubs
+    useEffect(() => {
+        getAllClubsData().then(setClubs); // Sækir gögnin um Clubs og uppfærir state
+    }, []);
 
     return (
         <div>
-            <div id="wrapper">
-                {renderedClubs.map((a)=>a)}
-            </div>
+            <input
+                type="text"
+                placeholder="Search Clubs"
+                onChange={(e) => setSearchTerm(e.target.value)} // Uppfærir search-ið við hverja breytingu
+            />
+            {/* Filtrum Clubs eftir leitarorðinu og birtum þau */}
+            {clubs.filter(club => 
+                club.name.toLowerCase().includes(searchTerm.toLowerCase()) // Leita eftir nafni
+            )
+            .map((club) => memberOfClubs(club.name, club.description, club.img, club.id))} {/* Birtir inn í síðuna, alla klúbba.*/}
         </div>
     );
 }
