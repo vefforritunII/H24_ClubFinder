@@ -29,7 +29,6 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
         for (let x of memberOfClubs){
             for (let i of allClubs){
                 if (i.id === x){
-                    console.log("FOUND ONE:",x)
                     listOfClubs.push(clubsInfo(i.name,i.description,i.img,x))
                 }
             }
