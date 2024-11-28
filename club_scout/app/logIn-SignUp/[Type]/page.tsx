@@ -14,7 +14,7 @@ export function Form(props :{type: string}){
         <input id="username" name="username" required></input>
       
         <h3>Password</h3>
-        <input id="password" name="password" required></input>
+        <input type="password" id="password" name="password" required></input>
 
         <button type="submit">Sign in</button>
 
@@ -29,10 +29,10 @@ export function Form(props :{type: string}){
         <input id="username" name="username" required></input>
 
         <h3>Password</h3>
-        <input id="password" name="password" required></input>
+        <input type="password" id="password" name="password" required></input>
 
         <h3>Re-enter your password</h3>
-        <input id="passwordCheck" name="passwordCheck" required></input>
+        <input type="password" id="passwordCheck" name="passwordCheck" required></input>
 
         <button type="submit">Sign up</button>
 

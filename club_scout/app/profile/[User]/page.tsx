@@ -3,6 +3,8 @@ import { Suspense } from "react"
 import { cookies } from 'next/headers'
 import { redirect } from "next/navigation"
 import  clubsInfo  from "@/app/components/profileMemberClubs"
+import Link from "next/link"
+
 
 
 export default async function Page({params}: {params:Promise<{User:string}>}){
@@ -20,18 +22,19 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
     if (!cookie.has("haveSignedIn") || cookie.get("haveSignedIn")?.value !== userData.user_name){
         redirect("/logIn-SignUp/log_in")
     }
-
     
     else if(cookie.has("haveSignedIn") && cookie.get("haveSignedIn")?.value == userData.user_name){// þarf "?"
-        
+
         // sækjir clubs sem notandinn er members of
         for (let x of memberOfClubs){
             for (let i of allClubs){
                 if (i.id === x){
+                    console.log("FOUND ONE:",x)
                     listOfClubs.push(clubsInfo(i.name,i.description,i.img,x))
                 }
             }
         }
+
 
         /* // old code
         for (let x of members){
@@ -46,6 +49,7 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
         }*/
 
         
+        
         return(
             <div>
                 <h2>velkominn!</h2>
@@ -54,6 +58,7 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
                 {listOfClubs.map((a)=>a)}
 
                 <button onClick={signOut}>sign out</button>
+                <Link href={"/profile/"+cookie.get("haveSignedIn")?.value+"/settings"}>Profile Settings</Link>
             </div>
         )
     }

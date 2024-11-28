@@ -2,7 +2,6 @@
 
 import { supabase } from "@/app/library/supabaseClients";
 
-import {promises as fs } from "fs"
 import { redirect } from "next/navigation"
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers'
@@ -23,7 +22,7 @@ export async function sign_up(formdata: FormData){
         const { error } = await supabase
         .from('profiles')
         .insert([
-          { user_name: signUpData.username, password: signUpData.password, email:"", },
+          { user_name: signUpData.username, password: signUpData.password, email:"" },
         ])
 
         if (error){
@@ -194,5 +193,139 @@ export async function getMembers() {
     const { data, error } = await supabase
     .from('club_members')
     .select()
+
+    if (error){
+        console.log("ERROR í getMembers:",error)
+    }
+
+    return data
+}
+
+export async function changeInfoAboutUser(formdata:FormData) { // BÆTT VIÐ FILE STUFF NÆSTA TÍMA -_-____-----_----_
+
+    const cookie = await cookies()
+    const userPrefences = await getUserPreferences()
+    const preferences = await getPreferences()
+    
+    const changedInfo = {
+        oldUsername: formdata.get("old_username"),
+        username: formdata.get("username"),
+        email: formdata.get("email"),
+    }
+
+    const userData = await getUserData(String(changedInfo.oldUsername))
+    let listOfFormPreferences = []
+    let listOfUserPreferences = []
+
+    for (let x of preferences){
+        if (formdata.get(String(x.preference)) === "on"){
+            listOfFormPreferences.push("on")
+        }
+        else{
+            listOfFormPreferences.push(null)
+        }
+    }
+    
+    for (let x of userPrefences){
+        if (x.profile_id === userData.id){
+            
+            listOfUserPreferences.push(String(x.preference_id))            
+        }
+    }
+
+    for ( let x = 0; x<listOfFormPreferences?.length;x++ ){
+        // ef notandan breytir ekki
+        if(listOfFormPreferences[x] === "on" && listOfUserPreferences.includes(String(x+1)) || listOfFormPreferences[x] === null && !listOfUserPreferences.includes(String(x+1))){
+            
+        }
+        // ef notandan langar að bætta við nýja preference
+        else if (listOfFormPreferences[x] === "on" && !listOfUserPreferences.includes(String(x+1))){
+            const {error} = await supabase.from("member_preferences").insert({profile_id: userData.id,preference_id:x+1})
+
+            if (error){
+                console.log("ERROR í changeInfoAboutUser, reyndi að bætt við nýja gögn member_preference:",error)
+            }
+        }
+        // ef notandan langar að eyða preference
+        else if (listOfFormPreferences[x] === null && listOfUserPreferences.includes(String(x+1))){
+
+            let idRow = undefined
+            for (let i of userPrefences){
+                if (i.profile_id === userData.id && i.preference_id === x+1){
+                    idRow = i.id
+                }
+            }
+
+            const {error} = await supabase.from("member_preferences").delete().eq("id",idRow)
+
+            if (error){
+                console.log("ERROR í changeInfoAboutUser, reyndi að delete-a gögn frá member_preference:",error)
+            }
+
+        }
+        
+    }
+
+    const { error } = await supabase
+    .from("profiles")
+    .update({ user_name: changedInfo.username, email:changedInfo.email})
+    .eq("id",userData.id)
+
+    if (error){
+        console.log("ERROR í changeInfoAboutUser, reyndi að update-a info um user:",error)
+    }
+    
+    // breyta cookies og redirecta til profile síðan
+    cookie.delete("haveSignedIn")
+    cookie.set("haveSignedIn",String(changedInfo.username))
+
+    revalidatePath("/profile/"+changedInfo.oldUsername)
+    redirect("/profile/"+changedInfo.username)
+} 
+
+export async function changePassword(formdata:FormData){
+
+    const passwordData = {
+        username: formdata.get("username"),
+        password: formdata.get("password"),
+        passwordCheck: formdata.get("passwordCheck")
+    }
+
+    const userData = await getUserData(String(passwordData.username))
+
+    if (passwordData.password === passwordData.passwordCheck && String(passwordData.password).length >= 8){
+        const { error } = await supabase
+        .from("profiles")
+        .update({ password: passwordData.password})
+        .eq("id",userData.id)
+
+        if (error){
+            console.log("ERROR í changepassword:",error)
+        }
+
+        revalidatePath("/profile/"+passwordData.username)
+        redirect("/profile/"+passwordData.username)
+    }
+}
+
+export async function getPreferences(){
+    const {data,error} = await supabase
+        .from("preference")
+        .select()
+
+    if (error){
+        console.log("ERROR í getPreferences:",error)
+    }
+
+    return data
+}
+
+export async function getUserPreferences(){
+    const {data,error} = await supabase.from("member_preferences").select()
+
+    if (error){
+        console.log("ERROR í getUserPreferences:",error)
+    }
+
     return data
 }
