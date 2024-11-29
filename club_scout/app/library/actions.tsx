@@ -30,7 +30,7 @@ export async function sign_up(formdata: FormData){
             console.log("ERROR, í sign up:",error)
         }
         else{
-            redirect("logIn-SignUp/log_in")
+            redirect("/logIn-SignUp/log_in")
         }
         
     }
