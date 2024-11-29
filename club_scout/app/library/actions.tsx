@@ -29,7 +29,7 @@ export async function sign_up(formdata: FormData){
             console.log("ERROR, í sign up:",error)
         }
         else{
-            redirect("/profile/"+signUpData.username)//má líka vera id
+            redirect("logIn-SignUp/log_in")
         }
         
     }
