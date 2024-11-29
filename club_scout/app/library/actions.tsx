@@ -16,8 +16,9 @@ export async function sign_up(formdata: FormData){
         passwordCheck: formdata.get("passwordCheck")
     }
     
-    // ká ef password og passwordCheck eru eins og svo búa til nýja profile
-    if (signUpData.password === signUpData.passwordCheck && String(signUpData.username).length >= 8) {
+    // ká ef password og passwordCheck eru eins og svo búa til nýja profile 
+    // BÆTT VIÐ SHIT TIL AÐ KÁ EF USERNAME ER UNIQUE (í supabase eða í if statement)
+    if (signUpData.password === signUpData.passwordCheck && String(signUpData.password).length >= 8) {
 
         const { error } = await supabase
         .from('profiles')
@@ -331,4 +332,66 @@ export async function getUserPreferences(){
     }
 
     return data
+}
+
+export async function createClub(formdata: FormData){   
+
+    const cookie = await cookies()
+    const preferences = await getPreferences()
+    const userData = await getUserData(String(cookie.get("haveSignedIn")?.value))
+    const createdClubData = {
+        clubName: formdata.get("clubName"),
+        desciption: formdata.get("description"),
+        logo: formdata.get("logo")
+    }
+
+    // list af preferences
+    let isChecked = false
+    let listOfPreferences = []
+
+    for (let x of preferences){
+        let checkboxPreference = formdata.get(String(x.preference))
+        if (checkboxPreference === "on"){
+            console.log("IT WENT IN, THE ONE THAT WENT IN IS:",x)
+            isChecked = true
+            listOfPreferences.push(x)
+        }
+        else{
+
+        }
+    }
+
+    if (isChecked === false){
+        //alert("you didnt pick any preferences!")
+        redirect("/profile/"+cookie.get("haveSignedIn")?.value)
+    }
+    else if (isChecked === true){
+
+        const {data, error} = await supabase.from("clubs").insert({name:createdClubData.clubName,description:createdClubData.desciption,owner_id:userData.id}).select()
+
+        console.log("created club data:",data)
+
+        if (error){
+            console.log("ERROR í createClub á meðan að setja inn nýja club í supabase:",error)
+        }
+
+        // BÆTT KÓÐA SEM BÚAR TIL NÝJA FILE FYRIR BUCKET !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        
+        /* // gera þetta næsta tíma svo í user bætt við listi af owned clubs og svo bætt við leið til að edit-a clubs
+        for (let x of listOfPreferences){
+            const {error} = await supabase.from("club_preferences").insert("")
+        }
+
+        */
+
+        redirect("/profile/"+cookie.get("haveSignedIn")?.value)
+    }
+    else{
+
+    }
+    
+}
+
+export async function ownedClubs(userID:Number){ // búa til kóða fyrir þetta þegar búinn með createClub
+
 }

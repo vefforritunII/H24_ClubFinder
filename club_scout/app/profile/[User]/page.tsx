@@ -56,6 +56,8 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
 
                 {listOfClubs.map((a)=>a)}
 
+                <Link href={"/profile/"+cookie.get("haveSignedIn")?.value+"/newClub"}>create new club</Link>
+
                 <button onClick={signOut}>sign out</button>
                 <Link href={"/profile/"+cookie.get("haveSignedIn")?.value+"/settings"}>Profile Settings</Link>
             </div>
