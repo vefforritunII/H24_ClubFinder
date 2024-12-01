@@ -157,25 +157,25 @@ export async function listOfMembersOfClubs(user_id:Number){
     return lists
 }
 
-export async function getAllClubsData({ category, featured }) {
-    let query = supabase.from('clubs').select('*');
-  
-    if (category) {
-      query = query.contains('category', [category]); // Filter by category if provided
+export async function getAllClubsData(filters?: { featured?: boolean; category?: string }) {
+    let query = supabase.from('clubs').select();
+
+    if (filters?.featured !== undefined) {
+        query = query.eq('featured', filters.featured); // Filter by featured
     }
-  
-    if (featured !== undefined) {
-      query = query.eq('featured', featured); // Filter by featured status if provided
+    if (filters?.category) {
+        query = query.contains('category', [filters.category]); // Filter by category
     }
-  
+
     const { data, error } = await query;
-  
+
     if (error) {
-      console.log("ERROR in getAllClubsData:", error);
+        console.log("ERROR in getAllClubsData:", error);
     }
-  
-    return data;
-  }
+
+    return data || [];
+}
+
   
   
 
