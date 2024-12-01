@@ -1,29 +1,81 @@
-"use client"; 
+"use client";
 
 import { useState, useEffect } from "react";
-import { getAllClubsData } from "@/app/library/actions"; // sækir öll Clubs
-import memberOfClubs from "@/app/components/profileMemberClubs"; // Component til að birta upplýsingar um Clubs
+import { getAllClubsData } from "@/app/library/actions"; // Import your fetch function
 
 export default function Page() {
-    const [clubs, setClubs] = useState([]); // Til að geyma listann af Clubs
-    const [searchTerm, setSearchTerm] = useState(""); // Til að geyma search-ið sem notandi slær inn
+  const [featuredClubs, setFeaturedClubs] = useState([]);
+  const [sportsClubs, setSportsClubs] = useState([]);
+  const [outdoorClubs, setOutdoorClubs] = useState([]);
+  const [indoorClubs, setIndoorClubs] = useState([]);
 
-    useEffect(() => {
-        getAllClubsData().then(setClubs); // Sækir gögnin um Clubs og uppfærir state
-    }, []);
+  useEffect(() => {
+    // Fetch featured clubs
+    getAllClubsData({ featured: true }).then((clubs) => {
+      setFeaturedClubs(clubs);
+    });
 
-    return (
-        <div>
-            <input
-                type="text"
-                placeholder="Search Clubs"
-                onChange={(e) => setSearchTerm(e.target.value)} // Uppfærir search-ið við hverja breytingu
-            />
-            {/* Filtrum Clubs eftir leitarorðinu og birtum þau */}
-            {clubs.filter(club => 
-                club.name.toLowerCase().includes(searchTerm.toLowerCase()) // Leita eftir nafni
-            )
-            .map((club) => memberOfClubs(club.name, club.description, club.img, club.id))} {/* Birtir inn í síðuna, alla klúbba.*/}
-        </div>
-    );
+    // Fetch sports clubs
+    getAllClubsData({ category: "Sports" }).then((clubs) => {
+      setSportsClubs(clubs);
+    });
+
+    // Fetch outdoor clubs
+    getAllClubsData({ category: "Outdoors" }).then((clubs) => {
+      setOutdoorClubs(clubs);
+    });
+
+    // Fetch indoor clubs
+    getAllClubsData({ category: "Indoors" }).then((clubs) => {
+      setIndoorClubs(clubs);
+    });
+  }, []);
+
+  return (
+    <div>
+      <h2>Featured Clubs</h2>
+      <div>
+        {featuredClubs.map((club) => (
+          <div key={club.id}>
+            <h3>{club.name}</h3>
+            <img src={club.logo} alt={club.name} />
+            <p>{club.description}</p>
+          </div>
+        ))}
+      </div>
+
+      <h2>Sports Clubs</h2>
+      <div>
+        {sportsClubs.map((club) => (
+          <div key={club.id}>
+            <h3>{club.name}</h3>
+            <img src={club.logo} alt={club.name} />
+            <p>{club.description}</p>
+          </div>
+        ))}
+      </div>
+
+      <h2>Outdoor Clubs</h2>
+      <div>
+        {outdoorClubs.map((club) => (
+          <div key={club.id}>
+            <h3>{club.name}</h3>
+            <img src={club.logo} alt={club.name} />
+            <p>{club.description}</p>
+          </div>
+        ))}
+      </div>
+
+      <h2>Indoor Clubs</h2>
+      <div>
+        {indoorClubs.map((club) => (
+          <div key={club.id}>
+            <h3>{club.name}</h3>
+            <img src={club.logo} alt={club.name} />
+            <p>{club.description}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 }
