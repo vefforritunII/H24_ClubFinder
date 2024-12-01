@@ -1,88 +1,86 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getAllClubsData } from "@/app/library/actions"; // Import your fetch function
-import memberOfClubs from "@/app/components/profileMemberClubs"; // Component to display club details
+import { getAllClubsData } from "@/app/library/actions";
+import memberOfClubs from "@/app/components/profileMemberClubs";
 
 export default function Page() {
-  const [clubs, setClubs] = useState([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [featuredClubs, setFeaturedClubs] = useState([]);
-  const [sportsClubs, setSportsClubs] = useState([]);
-  const [outdoorClubs, setOutdoorClubs] = useState([]);
-  const [indoorClubs, setIndoorClubs] = useState([]);
+    const [clubs, setClubs] = useState([]);
+    const [featuredClubs, setFeaturedClubs] = useState([]);
+    const [sportsClubs, setSportsClubs] = useState([]);
+    const [outdoorClubs, setOutdoorClubs] = useState([]);
+    const [indoorClubs, setIndoorClubs] = useState([]);
+    const [searchTerm, setSearchTerm] = useState("");
 
-  useEffect(() => {
-    // Fetch all clubs
-    getAllClubsData().then((clubs) => {
-      setClubs(clubs);
-    });
+    useEffect(() => {
+        // Fetch all clubs
+        getAllClubsData().then(setClubs);
 
-    // Fetch featured clubs
-    getAllClubsData({ featured: true }).then((clubs) => {
-      setFeaturedClubs(clubs);
-    });
+        // Fetch featured clubs
+        getAllClubsData({ featured: true }).then((data) => setFeaturedClubs(data || []));
 
-    // Fetch clubs by category (Sports, Outdoors, Indoors)
-    getAllClubsData({ category: "Sports" }).then((clubs) => {
-      setSportsClubs(clubs);
-    });
-    getAllClubsData({ category: "Outdoors" }).then((clubs) => {
-      setOutdoorClubs(clubs);
-    });
-    getAllClubsData({ category: "Indoors" }).then((clubs) => {
-      setIndoorClubs(clubs);
-    });
-  }, []);
+        // Fetch clubs by category
+        getAllClubsData({ category: "Sports" }).then((data) => setSportsClubs(data || []));
+        getAllClubsData({ category: "Outdoors" }).then((data) => setOutdoorClubs(data || []));
+        getAllClubsData({ category: "Indoors" }).then((data) => setIndoorClubs(data || []));
+    }, []);
 
-  return (
-    <div>
-      {/* Search Bar */}
-      <input
-        type="text"
-        placeholder="Search Clubs"
-        onChange={(e) => setSearchTerm(e.target.value)} // Update search term
-      />
+    return (
+        <div>
+            {/* Search bar */}
+            <input
+                type="text"
+                placeholder="Search Clubs"
+                onChange={(e) => setSearchTerm(e.target.value)}
+            />
 
-      {/* Featured Clubs Section */}
-      <h2>Featured Clubs</h2>
-      <div>
-        {featuredClubs
-          .filter((club) =>
-            club.name.toLowerCase().includes(searchTerm.toLowerCase()) // Filter by search term
-          )
-          .map((club) => memberOfClubs(club.name, club.description, club.logo, club.id))}
-      </div>
+            {/* Featured Clubs */}
+            <h2>Featured Clubs</h2>
+            <div>
+                {featuredClubs.length > 0 ? (
+                    featuredClubs
+                        .filter((club) => club.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                        .map((club) => memberOfClubs(club.name, club.description, club.img, club.id))
+                ) : (
+                    <p>No featured clubs available.</p>
+                )}
+            </div>
 
-      {/* Sports Clubs Section */}
-      <h2>Sports Clubs</h2>
-      <div>
-        {sportsClubs
-          .filter((club) =>
-            club.name.toLowerCase().includes(searchTerm.toLowerCase()) // Filter by search term
-          )
-          .map((club) => memberOfClubs(club.name, club.description, club.logo, club.id))}
-      </div>
+            {/* Sports Clubs */}
+            <h2>Sports Clubs</h2>
+            <div>
+                {sportsClubs.length > 0 ? (
+                    sportsClubs
+                        .filter((club) => club.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                        .map((club) => memberOfClubs(club.name, club.description, club.img, club.id))
+                ) : (
+                    <p>No sports clubs available.</p>
+                )}
+            </div>
 
-      {/* Outdoors Clubs Section */}
-      <h2>Outdoor Clubs</h2>
-      <div>
-        {outdoorClubs
-          .filter((club) =>
-            club.name.toLowerCase().includes(searchTerm.toLowerCase()) // Filter by search term
-          )
-          .map((club) => memberOfClubs(club.name, club.description, club.logo, club.id))}
-      </div>
+            {/* Outdoor Clubs */}
+            <h2>Outdoor Clubs</h2>
+            <div>
+                {outdoorClubs.length > 0 ? (
+                    outdoorClubs
+                        .filter((club) => club.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                        .map((club) => memberOfClubs(club.name, club.description, club.img, club.id))
+                ) : (
+                    <p>No outdoor clubs available.</p>
+                )}
+            </div>
 
-      {/* Indoors Clubs Section */}
-      <h2>Indoor Clubs</h2>
-      <div>
-        {indoorClubs
-          .filter((club) =>
-            club.name.toLowerCase().includes(searchTerm.toLowerCase()) // Filter by search term
-          )
-          .map((club) => memberOfClubs(club.name, club.description, club.logo, club.id))}
-      </div>
-    </div>
-  );
+            {/* Indoor Clubs */}
+            <h2>Indoor Clubs</h2>
+            <div>
+                {indoorClubs.length > 0 ? (
+                    indoorClubs
+                        .filter((club) => club.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                        .map((club) => memberOfClubs(club.name, club.description, club.img, club.id))
+                ) : (
+                    <p>No indoor clubs available.</p>
+                )}
+            </div>
+        </div>
+    );
 }
