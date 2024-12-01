@@ -1,12 +1,21 @@
 import Link from "next/link";
 
-// return-a club með nafn,description og logo-ið og id í key svo hún mun ekki væla
-export default function memberOfClubs(name: string,descreption:string,logo:string,id:string){
-    return(
-        <div key={id}>
-            <img src={logo} alt={logo} />
-            <Link href={"/Club/"+id}>{name}</Link>
-            <p>{descreption}</p>
+export default function memberOfClubs(name: string, description: string, logo: string, id: string) {
+    return (
+        <div key={id} style={{ border: "1px solid #ccc", margin: "10px", padding: "10px", textAlign: "center" }}>
+            {/* Mynd */}
+            <img
+                src={logo}
+                alt={name}
+                style={{ width: "100px", height: "100px", objectFit: "cover", marginBottom: "10px" }}
+            />
+            {/* Hlekkur */}
+            <Link href={`/Club/${id}`} style={{ textDecoration: "none", color: "blue" }}>
+                <h2>{name}</h2>
+            </Link>
+            {/* Lýsing */}
+            <p>{description}</p>
         </div>
-    )
+    );
 }
+
