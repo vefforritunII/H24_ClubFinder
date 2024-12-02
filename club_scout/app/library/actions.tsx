@@ -161,19 +161,28 @@ export async function listOfMembersOfClubs(user_id:Number){
     return lists
 }
 
-export async function getAllClubsData(){
+export async function getAllClubsData(filters?: { featured?: boolean; category?: string }) {
+    let query = supabase.from('clubs').select();// Búum til grunntilvísun í Supabase-töflu 'clubs'
 
-    // sækjir supabase gögn af clubs
-    const { data, error } = await supabase
-    .from('clubs')
-    .select()
-
-    if (error){
-        console.log("ERROR í getAllClubsData:",error)
+    // Ef filterið er fyrir 'featured', þá bætum við því við fyrirspurnina
+    if (filters?.featured !== undefined) { 
+        query = query.eq('featured', filters.featured); // filterar eftir 'featured'
+    }
+    // Ef filerinn er fyrir 'category', notum 'contains' til að filtera flokka
+    if (filters?.category) {
+        query = query.contains('category', [filters.category]); // filter eftir 'category'
     }
 
-    return data
+    const { data, error } = await query;
+
+    if (error) {
+        console.log("ERROR in getAllClubsData:", error);
+    }
+
+    return data || [];
 }
+  
+  
 
 export async function getClubData(clubID:number){
         // sækjir supabase gögn af clubs
