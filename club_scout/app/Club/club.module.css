@@ -1,14 +1,14 @@
 .clubRow {
     display: flex;
     overflow-x: auto;
-    gap: 20px; /* Adjust the gap between items */
+    gap: 20px;
     padding: 10px 0;
-    flex-wrap: nowrap; /* Prevent items from wrapping into the next line */
+    flex-wrap: nowrap;
 }
 
 .clubRow > div {
     flex-shrink: 0;
-    width: 200px; /* Fixed width for each club item */
+    width: 200px;
 }
 
 .clubRow img {
