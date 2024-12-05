@@ -1,18 +1,25 @@
-import Link from "next/link"; // Notum Next.js Link til að bæta hlekk við
+import Link from "next/link";
 
-export default function memberOfClubs(name: string, description: string, logo: string, id: string) {
-    return (
-        <div key={id}> {/* Hver klúbbur hefur einstakt ID sem notað er sem 'key' */}
-            <img
-                src={logo}
-                alt={name} 
-            />
-            {/* linkur sem vísir inn í club */}
-            <Link href={`/Club/${id}`}>
-                <h2>{name}</h2>
-            </Link>
-            <p>{description}</p>
-        </div>
-    );
+// return-a club með nafn,description og logo-ið og id í key svo hún mun ekki væla
+export default function memberOfClubs(name: string,descreption:string,logo:string,id:string,owner:boolean,username:string = "none"){
+    if (owner === false){
+        return(
+            <div key={id}>
+                <img src={logo} alt={logo} />
+                <Link href={"/Club/"+id}>{name}</Link>
+                <p>{descreption}</p>
+            </div>
+        )
+    }
+    else if (owner === true){
+        return(
+            <div key={id}>
+                <img src={logo} alt={logo} />
+                <Link href={"/Club/"+id}>{name}</Link>
+                <p>{descreption}</p>
+                <Link href={"/profile/"+username+"/"+id}>Change!</Link>
+            </div>
+        )
+    }
+
 }
-
