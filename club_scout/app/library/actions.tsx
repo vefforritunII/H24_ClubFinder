@@ -16,9 +16,8 @@ export async function sign_up(formdata: FormData){
         passwordCheck: formdata.get("passwordCheck")
     }
     
-    // ká ef password og passwordCheck eru eins og svo búa til nýja profile 
-    // BÆTT VIÐ SHIT TIL AÐ KÁ EF USERNAME ER UNIQUE (í supabase eða í if statement)
-    if (signUpData.password === signUpData.passwordCheck && String(signUpData.password).length >= 8) {
+    // ká ef password og passwordCheck eru eins og svo búa til nýja profile
+    if (signUpData.password === signUpData.passwordCheck && String(signUpData.username).length >= 8) {
 
         const { error } = await supabase
         .from('profiles')
