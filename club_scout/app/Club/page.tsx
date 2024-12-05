@@ -1,22 +1,23 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getAllClubsData } from "@/app/library/actions";
+import { getAllClubsData, getUserPreferences } from "@/app/library/actions";
 import memberOfClubs from "@/app/components/profileMemberClubs";
 import styles from './club.module.css';
 
-export default function Page() {
+export default function DiscoverPage() {
     const [clubs, setClubs] = useState([]);
+    const [userPreferences, setUserPreferences] = useState([]);
     const [searchTerm, setSearchTerm] = useState(""); 
 
-    // Sækir klúbba frá API þegar síðan hleðst
     useEffect(() => {
-        getAllClubsData().then((fetchedClubs) => {
-            console.log("Nýlega sóttir klúbbar:", fetchedClubs);
-            setClubs(fetchedClubs); // Uppfærir stöðugt ástand með klúbbum
-            console.log("Fetched Clubs:", fetchedClubs);
+        async function fetchData() {
+            const fetchedClubs = await getAllClubsData();
+            const preferences = await getUserPreferences(); // Get user preferences from the database
             setClubs(fetchedClubs);
-        });
+            setUserPreferences(preferences);
+        }
+        fetchData();
     }, []);
 
     const normalizeCategory = (club, categoryName) => {
@@ -29,9 +30,17 @@ export default function Page() {
     };
 
     // Dynamically group clubs by their category
-    const categories = ['Sports', 'Outdoors', 'Indoors']; // Add any other categories you want
+    const categories = ['Sports', 'Outdoors', 'Indoors']; // Add other categories if needed
     const categorizedClubs = categories.reduce((acc, category) => {
         acc[category] = clubs.filter(club => normalizeCategory(club, category.toLowerCase()));
+        return acc;
+    }, {});
+
+    // Show all clubs that match any user preference
+    const recommendedClubs = categories.reduce((acc, category) => {
+        if (userPreferences.includes(category.toLowerCase())) {
+            acc[category] = categorizedClubs[category];
+        }
         return acc;
     }, {});
 
@@ -41,20 +50,47 @@ export default function Page() {
             <input
                 type="text"
                 placeholder="Search Clubs"
-                onChange={(e) => setSearchTerm(e.target.value)} // update-ast leitarorð við innslátt
+                onChange={(e) => setSearchTerm(e.target.value)} // Search bar logic
             />
 
-            {/* Render clubs by category */}
-            {categories.map(category => (
-                <div key={category}>
-                    <h2>{category} Clubs</h2>
-                    <div className={styles.clubRow}>
-                        {categorizedClubs[category]
-                            .filter(club => club.name.toLowerCase().includes(searchTerm.toLowerCase()))
-                            .map(club => memberOfClubs(club.name, club.description, club.img, club.id))}
+            {/* Display categories dynamically */}
+            <div className={styles.recommendedClubs}>
+                {categories.map(category => (
+                    <div key={category}>
+                        <h2>{category} Clubs</h2>
+                        <div className={styles.clubRow}>
+                            {categorizedClubs[category]
+                                .filter(club => club.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                                .map(club => memberOfClubs(club.name, club.description, club.img, club.id, false))}
+                        </div>
                     </div>
+                ))}
+            </div>
+
+            {/* Display All Clubs as a fallback */}
+            <div>
+                <h2>All Clubs</h2>
+                <div className={styles.clubRow}>
+                    {clubs
+                        .filter(club => club.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                        .map(club => memberOfClubs(club.name, club.description, club.img, club.id, false))}
                 </div>
-            ))}
+            </div>
+
+            {/* Display recommended clubs based on user preferences */}
+            <div>
+                <h2>Recommended for You</h2>
+                {Object.keys(recommendedClubs).map(category => (
+                    <div key={category}>
+                        <h3>{category} Clubs</h3>
+                        <div className={styles.clubRow}>
+                            {recommendedClubs[category]
+                                .filter(club => club.name.toLowerCase().includes(searchTerm.toLowerCase()))
+                                .map(club => memberOfClubs(club.name, club.description, club.img, club.id, false))}
+                        </div>
+                    </div>
+                ))}
+            </div>
         </div>
     );
 }
