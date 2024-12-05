@@ -48,9 +48,9 @@ export default function Page() {
                 onChange={(e) => setSearchTerm(e.target.value)} // update-ast leitarorð við innslátt
             />
             {/* Renderar flokka með flokkheitum og flokkanafni */}
-            {renderClubSection("Íþróttaklúbbar", "sports")}
-            {renderClubSection("Útiklúbbar", "outdoors")}
-            {renderClubSection("Inniklúbbar", "indoors")}
+            {renderClubSection("Sport clubs", "1")}
+            {renderClubSection("Outdoors", "outdoors")}
+            {renderClubSection("Inndoors", "indoors")}
         </div>
     );
 }
