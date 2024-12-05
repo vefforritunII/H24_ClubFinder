@@ -1,4 +1,4 @@
-import { getUserData,createClub,getPreferences } from "@/app/library/actions"
+import { getUserData,createClub,getPreferences, editClub, getClubData, club_preferences } from "@/app/library/actions"
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { isNumberObject } from "util/types"
@@ -9,10 +9,10 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
     const user = (await params).User
     const ownedClubsType = (await params).ownedClubs // ignore-a þetta
     const prefernces = await getPreferences()
-    
+
+
     if (cookie.has("haveSignedIn") && user === userData.user_name){
         if (ownedClubsType === "newClub"){
-            console.log("its a new club")
 
             return (<div>
                 <h1>test with new club!</h1>
@@ -37,20 +37,50 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
                 </form>
             </div>)
         }
+        
         else if (!isNaN(ownedClubsType)){
-            console.log("yay number")
 
+            const clubData = await getClubData(Number(ownedClubsType)) 
+            const clubCategory = await club_preferences(clubData.id)
+            const a = await getPreferences()
+            let listOfClubCategory = []
+
+            for (let x of clubCategory){
+                listOfClubCategory.push(x.preference_id)
+            }
 
             return (<div>
                 <h1>test with already made club!</h1>
-                <h3></h3>
-            </div>)
-        }
-        
+                <h3>
+                <form action={editClub}>
 
-        console.log("user:",user)
-        console.log("ownedClubs:",ownedClubsType)
-        console.log("userdata:",userData)
+                    <input type="hidden" name="clubId" defaultValue={ownedClubsType} />
+
+                    <label htmlFor="clubName">club name:</label>
+                    <input name="clubName" id="clubName" defaultValue={clubData.name} required/>
+
+                    <label htmlFor="description">description:</label>
+                    <textarea name="description" id="description" defaultValue={clubData.description} required></textarea>
+
+                    <label htmlFor="logo">logo:</label>
+                    <input type="file" name="logo" id="logo" required/>{/* DEFAULT VALUE FOR FILE FROM BUCKETS !!!!! */}
+
+                    <label htmlFor="categories">categories:</label>
+                    <div id="categories">{/* við getum breyt þetta til option element og finna eih leið til að sækja multiple values */}
+                    {prefernces?.map((a) => {
+                        if (listOfClubCategory.includes(a.id)){
+                            return <div key={a.id}><input type="checkbox" name={a.preference} defaultChecked /> {a.preference}</div>
+                        }
+
+                        return <div key={a.id}><input type="checkbox" name={a.preference}/> {a.preference}</div>
+                        })}
+                    </div>
+
+                    <button type="submit">Save changes!</button>
+                </form>
+                </h3>
+            </div>)}
+        
     
     }
     else{
