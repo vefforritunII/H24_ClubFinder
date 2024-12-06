@@ -2,6 +2,12 @@
 :root {
   --background: #ffffff;
   --foreground: #171717;
+
+  --light-background: #fffeeb;
+  --light-text: #000000;
+  --light-text-secondary: #707070;
+
+  --light-selection: #d1d0c3;
 }
 
 @media (prefers-color-scheme: dark) {

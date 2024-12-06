@@ -1,11 +1,16 @@
+/* Adjust page content to account for the static sidebar */
+body {
+  margin-left: 250px; /* Ensure the main content isn't hidden behind the sidebar */
+}
+
 /* Sidebar.module.css */
 .sidebar {
   position: fixed;
   top: 0;
   left: 0;
   height: 100%;
-  width: 256px; /* Fixed width */
-  background-color: #fffeeb;
+  width: 256px; 
+  background-color: var(--light-background);
   box-shadow: rgba(0, 0, 0, 0.2) 2px 0px 10px;
   z-index: 1100;
 
@@ -33,7 +38,7 @@
 .sidebar_element {
   padding: 8px;
   
-  color: #707070;
+  color: var(--light-text-secondary);
 
   border-radius: 8px;
 
@@ -43,7 +48,7 @@
 }
 
 .sidebar_title {
-  color: #000000;
+  color: var(--light-text);
 
   font-size: 16px;
   font-weight: 700;
@@ -53,56 +58,17 @@
   font-size: 14px;
   font-weight: 600;
   
-  color: #707070;
+  color: var(--light-text-secondary);
 }
 
 .sidebar_link:hover {
-  color: #000000;
-  background-color: #d1d0c3;
+  color: var(--light-text);
+  background-color: var(--light-selection);
 }
 
 .sidebar_link_icon {
   width: 24px;
   height: 24px;
-}
-
-.h1 {
-  font-size: 25px;
-}
-
-.sidebarLinks {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  flex-grow: 1; /* Allow the list to take up remaining space */
-}
-
-.sidebarLinks li {
-  margin-bottom: 20px;
-}
-
-.sidebarLinks a {
-  text-decoration: none;
-  color: #333;
-  font-size: 18px;
-}
-
-/* Profile Link container at the bottom */
-.profileContainer {
-  margin-top: auto; /* Push this to the bottom */
-  padding-top: 20px; /* Space from the rest of the content */
-}
-
-.profileContainer a {
-  text-decoration: none;
-  color: #333;
-  font-size: 18px;
-  margin-top: 20px;
-}
-
-/* Adjust page content to account for the static sidebar */
-body {
-  margin-left: 250px; /* Ensure the main content isn't hidden behind the sidebar */
 }
 
 /* Responsive Design */
