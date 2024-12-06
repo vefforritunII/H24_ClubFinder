@@ -10,27 +10,55 @@ import memberOfClubs from "../components/profileMemberClubs";
 
 export async function sign_up(formdata: FormData){
     // sækja sign up form gögn
-    const signUpData = {
+    const signUpFormData = {
         username: formdata.get("username"),
         password: formdata.get("password"),
         passwordCheck: formdata.get("passwordCheck")
     }
+    const preferences = await getPreferences()
+
+    let isChecked = false
+    let listOfPreferences = []
+
+    for (let x of preferences){
+        if (formdata.get(String(x.preference)) === "on"){
+            isChecked = true
+            listOfPreferences.push(x)
+        }
+    }
     
     // ká ef password og passwordCheck eru eins og svo búa til nýja profile
-    if (signUpData.password === signUpData.passwordCheck && String(signUpData.username).length >= 8) {
 
-        const { error } = await supabase
+    if (signUpFormData.password === signUpFormData.passwordCheck && String(signUpFormData.password).length >= 8 && isChecked === true && !String(signUpFormData.username).includes(" ")) {
+
+        const { data,error } = await supabase
         .from('profiles')
         .insert([
-          { user_name: signUpData.username, password: signUpData.password, email:"" },
-        ])
+          { user_name: signUpFormData.username, password: signUpFormData.password, email:"" }
+        ]).select()
 
+        const signUpData = data
+        console.log("sss",signUpData)
         if (error){
-            console.log("ERROR, í sign up:",error)
+            console.log("ERROR, í sign up á meðan að insert-a nýja profie:",error)
         }
-        else{
-            redirect("logIn-SignUp/log_in")
+        else if(!error){
+
+            for (let x of listOfPreferences){
+                if (formdata.get(x.preference) === "on"){          
+                    const {error} = await supabase.from("member_preferences").insert({profile_id: signUpData[0].id,preference_id:x.id})
+
+                    if (error){
+                        console.log("ERROR í sign up á meðan að setja preferences fyrir profile:",error)
+                    }
+                }
+            }
+            
+            
         }
+        
+        redirect("/logIn-SignUp/log_in")
+        
         
     }
     else{
@@ -43,7 +71,7 @@ export async function sign_up(formdata: FormData){
 export async function sign_in(formdata:FormData) {
 
     // sækja sign in form gögn
-    const signInData = {
+    const signInFormData = {
         username: formdata.get("username"),
         password: formdata.get("password"),
     }
@@ -51,7 +79,7 @@ export async function sign_in(formdata:FormData) {
     const cookie = await cookies()
 
     // checka ef username og password eru strings svo reynir að finna notandan profile'ið og redirect-a til profile síðan
-    if (typeof signInData.username === 'string' && typeof signInData.password === 'string'){
+    if (typeof signInFormData.username === 'string' && typeof signInFormData.password === 'string'){
 
         // sækjir supabase gögn af profiles
         const { data, error } = await supabase
@@ -64,9 +92,9 @@ export async function sign_in(formdata:FormData) {
         
         for (let x of data){
             console.log(x)
-            if (x.user_name == signInData.username && x.password == signInData.password){
+            if (x.user_name == signInFormData.username && x.password == signInFormData.password){
                (await cookies()).set("haveSignedIn",x.user_name)
-                redirect("/profile/"+signInData.username)//má líka vera id
+                redirect("/profile/"+signInFormData.username)//má líka vera id
             }
         }
 
@@ -387,8 +415,6 @@ export async function createClub(formdata: FormData){
                 console.log("error um logo:",error)
         }
         if (!error){
-
-
 
             const {error} = await supabase.from("club_preferences").insert(listOfPreferences.map(a => {return {club_id: data[0].id,preference_id:a.id}}))
 

@@ -1,10 +1,11 @@
-import { sign_up,sign_in } from "@/app/library/actions" //þarf ekki .tsx
+import { sign_up,sign_in,getPreferences } from "@/app/library/actions" //þarf ekki .tsx
 import { redirect } from "next/navigation"
 import { cookies } from "next/headers"
 
-export function Form(props :{type: string}){
+export async function Form(props :{type: string}){
 
   const {type} = props
+  const preferences = await getPreferences()
 
   if (type==="log_in"){
     return(
@@ -35,6 +36,11 @@ export function Form(props :{type: string}){
 
         <h3>Re-enter your password</h3>
         <input type="password" id="passwordCheck" name="passwordCheck" required></input>
+
+        <label htmlFor="categories">categories:</label>
+        <div id="categories">{/* við getum breyt þetta til option element og finna eih leið til að sækja multiple values */}
+        {preferences?.map((a)=><div key={a.id}><input type="checkbox" name={a.preference}/> {a.preference}</div>)}
+        </div>
 
         <button type="submit">Sign up</button>
 
