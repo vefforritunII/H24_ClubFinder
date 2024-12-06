@@ -352,11 +352,15 @@ export async function getPreferences(){
     return data
 }
 
-export async function getUserPreferences(){
-    const {data,error} = await supabase.from("member_preferences").select()
+export async function getUserPreferences(userId: string) {
+    const { data, error } = await supabase
+        .from("member_preferences")
+        .select()
+        .eq("profile_id", userId);  // Retrieve preferences for a specific user
 
-    if (error){
-        console.log("ERROR í getUserPreferences:",error)
+    if (error) {
+        console.error("Error fetching user preferences:", error);
+        return [];
     }
 
     return data
