@@ -1,4 +1,4 @@
-import { getUserData,signOut,getAllClubsData,listOfMembersOfClubs} from "@/app/library/actions"
+import { getUserData,signOut,getAllClubsData,listOfMembersOfClubs,ownedClubs } from "@/app/library/actions"
 import { Suspense } from "react"
 import { cookies } from 'next/headers'
 import { redirect } from "next/navigation"
@@ -15,25 +15,28 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
     const allClubs = await getAllClubsData()
     const cookie = await cookies()
     const memberOfClubs = await listOfMembersOfClubs(Number(userData.id))
+    const userOwnedClubs = await ownedClubs(userData.id)
 
     let listOfClubs = []
-
+    let listofOwnedClubs = []
     // ef ekki með cookie eða ekki með rétt cookie
     if (!cookie.has("haveSignedIn") || cookie.get("haveSignedIn")?.value !== userData.user_name){
         redirect("/logIn-SignUp/log_in")
     }
-    
+        
     else if(cookie.has("haveSignedIn") && cookie.get("haveSignedIn")?.value == userData.user_name){// þarf "?"
 
         // sækjir clubs sem notandinn er members of
         for (let x of memberOfClubs){
             for (let i of allClubs){
                 if (i.id === x){
-                    listOfClubs.push(clubsInfo(i.name,i.description,i.img,x))
+                    listOfClubs.push(clubsInfo(i.name,i.description,i.img,x,false))
                 }
             }
         }
-
+        for (let x of userOwnedClubs){
+            listofOwnedClubs.push(clubsInfo(x.name,x.description,x.img,x.id,true,userData.user_name))
+        }
 
         /* // old code
         for (let x of members){
@@ -46,15 +49,26 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
                 
             }
         }*/
-
-        
         
         return(
             <div>
                 <h2>velkominn!</h2>
                 <h3>{userData.user_name}!</h3>
 
-                {listOfClubs.map((a)=>a)}
+                <div style={{display:"grid",gridTemplateColumns:"1fr 1fr"}}>
+
+                    <div>
+                    <h2>Member of:</h2>
+                    {listOfClubs.map((a)=>a)}
+                    </div>
+
+                    <div>
+                    <h2>Owned clubs:</h2>
+                    {listofOwnedClubs.map((a)=>a)}
+                    </div>
+                </div>
+
+                <Link href={"/profile/"+cookie.get("haveSignedIn")?.value+"/newClub"}>create new club</Link>
 
                 <button onClick={signOut}>sign out</button>
                 <Link href={"/profile/"+cookie.get("haveSignedIn")?.value+"/settings"}>Profile Settings</Link>

@@ -17,8 +17,7 @@ export async function sign_up(formdata: FormData){
     }
     
     // ká ef password og passwordCheck eru eins og svo búa til nýja profile
-    // BÆTT VIÐ LEIÐ TIL AÐ KÁ EF USERNAME ER UNIQUE (supabase eða í if statement)
-    if (signUpData.password === signUpData.passwordCheck && String(signUpData.password).length >= 8) {
+    if (signUpData.password === signUpData.passwordCheck && String(signUpData.username).length >= 8) {
 
         const { error } = await supabase
         .from('profiles')
@@ -30,7 +29,7 @@ export async function sign_up(formdata: FormData){
             console.log("ERROR, í sign up:",error)
         }
         else{
-            redirect("/logIn-SignUp/log_in")
+            redirect("logIn-SignUp/log_in")
         }
         
     }
@@ -161,28 +160,20 @@ export async function listOfMembersOfClubs(user_id:Number){
     return lists
 }
 
-export async function getAllClubsData(filters?: { featured?: boolean; category?: string }) {
-    let query = supabase.from('clubs').select();// Búum til grunntilvísun í Supabase-töflu 'clubs'
+export async function getAllClubsData(){
 
-    // Ef filterið er fyrir 'featured', þá bætum við því við fyrirspurnina
-    if (filters?.featured !== undefined) { 
-        query = query.eq('featured', filters.featured); // filterar eftir 'featured'
-    }
-    // Ef filerinn er fyrir 'category', notum 'contains' til að filtera flokka
-    if (filters?.category) {
-        query = query.contains('category', [filters.category]); // filter eftir 'category'
-    }
+    // sækjir supabase gögn af clubs
+    const { data, error } = await supabase
+    .from('clubs')
+    .select()
 
-    const { data, error } = await query;
-
-    if (error) {
-        console.log("ERROR in getAllClubsData:", error);
+    if (error){
+        console.log("ERROR í getAllClubsData:",error)
     }
 
-    return data || [];
+
+    return data
 }
-  
-  
 
 export async function getClubData(clubID:number){
         // sækjir supabase gögn af clubs
@@ -333,12 +324,228 @@ export async function getPreferences(){
     return data
 }
 
-export async function getUserPreferences(){
-    const {data,error} = await supabase.from("member_preferences").select()
+export async function getUserPreferences(userId: string) {
+    const { data, error } = await supabase
+        .from("member_preferences")
+        .select()
+        .eq("profile_id", userId);  // Retrieve preferences for a specific user
 
-    if (error){
-        console.log("ERROR í getUserPreferences:",error)
+    if (error) {
+        console.error("Error fetching user preferences:", error);
+        return [];
     }
 
     return data
+}
+
+export async function createClub(formdata: FormData){   
+
+    const cookie = await cookies()
+    const preferences = await getPreferences()
+    const userData = await getUserData(String(cookie.get("haveSignedIn")?.value))
+    const createdClubData = {
+        clubName: formdata.get("clubName"),
+        description: formdata.get("description"),
+        logo: formdata.get("logo")
+    }
+
+    // list af preferences
+    let isChecked = false
+    let listOfPreferences = []
+
+    for (let x of preferences){
+        let checkboxPreference = formdata.get(String(x.preference))
+        if (checkboxPreference === "on"){
+            isChecked = true
+            listOfPreferences.push(x)
+        }
+        else{
+
+        }
+    }
+
+    if (isChecked === false){
+        //alert("you didnt pick any preferences!") ------------------------------------------------_-_--_-
+        redirect("/profile/"+cookie.get("haveSignedIn")?.value)
+    }
+    else if (isChecked === true){
+
+        const {data, error} = await supabase.from("clubs").insert({name:createdClubData.clubName,description:createdClubData.description,owner_id:userData.id}).select()
+        const uploadedClubdata = data
+        if (error){
+            console.log("ERROR í createClub á meðan að setja inn nýja club í supabase:",error)
+        }
+
+        // BÆTT KÓÐA SEM BÚAR TIL NÝJA FILE FYRIR BUCKET !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+        if (!error){
+            const { data, error } = await supabase
+                .storage
+                .from('profile pic')
+                .upload('avatar'+uploadedClubdata[0].id+'.png', createdClubData.logo, {
+                    cacheControl: '3600',
+                    upsert: false
+                })
+
+                console.log("data um logo:",data)
+                console.log("error um logo:",error)
+        }
+        if (!error){
+
+
+
+            const {error} = await supabase.from("club_preferences").insert(listOfPreferences.map(a => {return {club_id: data[0].id,preference_id:a.id}}))
+
+            if (error){
+                console.log("ERROR á meðan að setja preferences fyrir club:",error)
+            }
+        }
+
+        redirect("/profile/"+cookie.get("haveSignedIn")?.value)
+    }
+    else{
+
+    }
+    
+}
+
+export async function ownedClubs(userID:Number){ // búa til kóða fyrir þetta þegar búinn með createClub
+    const allClubs = await getAllClubsData()
+    let listOfOwnedClubs = []
+
+    for (let x of allClubs){
+        if (userID === x.owner_id){
+            listOfOwnedClubs.push(x)
+        }
+    }
+    
+
+    return listOfOwnedClubs
+}
+
+export async function editClub(formdata:FormData){
+    const cookie = await cookies()
+    const preferences = await getPreferences()
+    const userData = await getUserData(String(cookie.get("haveSignedIn")?.value))
+    const editedClubData = {
+        clubId: formdata.get("clubId"),
+        clubName: formdata.get("clubName"),
+        description: formdata.get("description"),
+        logo: formdata.get("logo")
+    }
+    const clubCategories = await club_preferences(Number(editedClubData.clubId))
+
+    
+    let isChecked = false
+    let listOfPreferences = []
+
+    for (let x of preferences){
+        let checkboxPreference = formdata.get(String(x.preference))
+        if (checkboxPreference === "on"){
+            isChecked = true
+            listOfPreferences.push(x)
+        }
+        else{
+
+        }
+    }
+
+    if (isChecked === false){
+        //alert("no preferences chosen!") ------------------------------------------------_-_--_-
+        redirect("/profile/"+cookie.get("haveSignedIn")?.value+"/"+editedClubData.clubId)
+    }
+    else if (isChecked === true){      
+
+        const {error} = await supabase.from("clubs").update({name:editedClubData.clubName,description:editedClubData.description,img:editedClubData.logo}).eq("id",Number(editedClubData.clubId))
+
+        if (error){
+            console.log("ERROR í editclub á meðan að update-a club data:",error)
+        }
+
+        if (!error){ // finish doing the editClub (need to do preferences too)
+
+            let preferencesFormList = []
+
+            for (let x of preferences){
+                if (formdata.get(x.preference) === "on"){
+                    console.log("THIS ONE IS ONE")
+                    preferencesFormList.push("on")
+
+                }
+                else {
+                    console.log("this ones off")
+                    preferencesFormList.push(null)
+
+                }
+            }
+
+            let preferencesClubList = []
+
+            for (let x of clubCategories){
+                preferencesClubList.push(x.preference_id)
+            }
+
+            for (let x = 0;x<preferencesFormList.length;x++){
+                if (preferencesFormList[x]==="on" && preferencesClubList.includes(x+1) || preferencesFormList[x] === null && !preferencesClubList.includes(x+1)){
+                    console.log("þarf ekki breyta")
+                }
+                else if (preferencesFormList[x] === "on" && !preferencesClubList.includes(x+1)) {
+                    console.log("bætt við stuff")
+
+                    const {error} = await supabase.from("club_preferences").insert({club_id: editedClubData.clubId,preference_id:x+1})
+
+                    if (error){
+                        console.log("ERROR í editClub á meðan að insert-a í club preferences:",error)
+                    }
+                }
+                else if (preferencesFormList[x] === null && preferencesClubList.includes(x+1)){
+                    console.log("eyða stuff")
+                    let idRow = undefined
+                    for (let i of clubCategories){
+                        if (i.club_id === Number(editedClubData.clubId) && i.preference_id === x+1){
+                            idRow = i.id
+                        }
+                    }
+
+                    const {error} = await supabase.from("club_preferences").delete().eq("id",idRow)
+                    
+                    if (error){
+                        console.log("ERROR í editClub á meðan að delete-a í club preferences:",error)
+                    }
+                }
+            }
+            
+            if (error){
+                console.log("ERROR á meðan að setja preferences fyrir club:",error)
+            }
+        }
+        redirect("/profile/"+cookie.get("haveSignedIn")?.value) // segir að vélið get ekki lesið undefined í 'id' í profile
+    }
+
+}
+
+export async function club_preferences(clubId:Number){ 
+    const {data, error} = await supabase.from("club_preferences").select().eq("club_id",Number(clubId))
+    if (error){
+        console.log("ERROR í club_preferences:",error)
+    }
+
+    return data
+}
+export async function allClubCategories(){ 
+    const {data, error} = await supabase.from("club_preferences").select()
+    if (error){
+        console.log("ERROR í club_preferences:",error)
+    }
+
+    return data
+}
+export async function test(){
+
+    const {data} = await supabase.from("club_preferences").select()
+    const bbb = await getPreferences()
+
+    console.log("club preferences:",data)
+    console.log("pref:",bbb)
+    
 }
