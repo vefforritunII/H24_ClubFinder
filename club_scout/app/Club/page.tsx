@@ -56,13 +56,13 @@ export default function DiscoverPage() {
                 placeholder="Search Clubs"
                 value={searchTerm} // Controlled input
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className={styles.searchBar}
+                className={styles.search_bar}
             />
 
             {/* All Clubs */}
             <div>
                 <h2>All Clubs</h2>
-                <div className={styles.clubRow}>
+                <div className={styles.club_row}>
                     {clubs
                         .filter((club) =>
                             club.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -80,11 +80,11 @@ export default function DiscoverPage() {
             </div>
 
             {/* Display clubs by category */}
-            <div className={styles.recommendedClubs}>
+            <div className={styles.recommended_clubs}>
                 {categories.map((category) => (
                     <div key={category}>
                         <h2>{category} Clubs</h2>
-                        <div className={styles.clubRow}>
+                        <div className={styles.club_row}>
                             {categorizedClubs[category]
                                 .filter((club) =>
                                     club.name.toLowerCase().includes(searchTerm.toLowerCase())
@@ -109,7 +109,7 @@ export default function DiscoverPage() {
                 {Object.keys(recommendedClubs).map((category) => (
                     <div key={category}>
                         <h3>{category} Clubs</h3>
-                        <div className={styles.clubRow}>
+                        <div className={styles.club_row}>
                             {recommendedClubs[category]
                                 .filter((club) =>
                                     club.name.toLowerCase().includes(searchTerm.toLowerCase())
