@@ -235,10 +235,6 @@ export async function getMembers() {
 
 export async function changeInfoAboutUser(formdata:FormData) { // BÆTT VIÐ FILE STUFF NÆSTA TÍMA -_-____-----_----_
 
-    const cookie = await cookies()
-    const userPrefences = await getUserPreferences()
-    const preferences = await getPreferences()
-    
     const changedInfo = {
         oldUsername: formdata.get("old_username"),
         username: formdata.get("username"),
@@ -246,6 +242,10 @@ export async function changeInfoAboutUser(formdata:FormData) { // BÆTT VIÐ FIL
     }
 
     const userData = await getUserData(String(changedInfo.oldUsername))
+    const cookie = await cookies()
+    const userPrefences = await getUserPreferences(userData.id)
+    const preferences = await getPreferences()
+    
     let listOfFormPreferences = []
     let listOfUserPreferences = []
 
