@@ -1,6 +1,6 @@
 /* Adjust page content to account for the static sidebar */
 body {
-  margin-left: 250px; /* Ensure the main content isn't hidden behind the sidebar */
+  margin-left: 256px; /* Ensure the main content isn't hidden behind the sidebar */
 }
 
 /* Sidebar.module.css */
