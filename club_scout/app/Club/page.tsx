@@ -1,77 +1,126 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import { getAllClubsData } from "@/app/library/actions";
+import { getAllClubsData, getUserPreferences } from "@/app/library/actions";
 import memberOfClubs from "@/app/components/profileMemberClubs";
-import styles from './club.module.css';
+import styles from "./club.module.css";
 
-export default function Page() {
-    // býr til stöðugt ástand fyrir geymslu á clubs og search
-    const [clubs, setClubs] = useState([]); // Geyma alla clubs
-    const [searchTerm, setSearchTerm] = useState(""); // search
+export default function DiscoverPage() {
+    const [clubs, setClubs] = useState([]); // State for all clubs
+    const [userPreferences, setUserPreferences] = useState([]); // State for user preferences
+    const [searchTerm, setSearchTerm] = useState(""); // Initialize search term as empty string
+    const [isLoading, setIsLoading] = useState(true);
+    const [error, setError] = useState(null); // Error state
 
-    // Nota useEffect til að sækja club data þegar síðan loadast
     useEffect(() => {
-        getAllClubsData().then((fetchedClubs) => {
-            console.log("Fetched Clubs:", fetchedClubs); // Skráir club data í console fyrir problems
-            setClubs(fetchedClubs); // Uppfærir lista með clubs
-        });
+        async function fetchData() {
+            try {
+                setIsLoading(true);
+                const fetchedClubs = await getAllClubsData(); // Fetch all clubs
+                const preferences = await getUserPreferences(); // Fetch user preferences
+                setClubs(fetchedClubs);
+                setUserPreferences(preferences);
+            } catch (error) {
+                console.error('Error fetching data:', error);
+                setError('Failed to load data. Please try again later.');
+            } finally {
+                setIsLoading(false);
+            }
+        }
+        fetchData();
     }, []);
 
-    //  setur saman category (string eða array) og bera saman við nafn
-    const normalizeCategory = (club, categoryName) => {
-        // Ef 'category' er array, berum saman öll atriði
-        if (Array.isArray(club.category)) {
-            return club.category.map(c => c.toLowerCase()).includes(categoryName);
-        } 
-        // Ef 'category' er strengur, brjótum hann niður og berum saman
-        else if (typeof club.category === 'string') {
-            return club.category.split(',').map(c => c.trim().toLowerCase()).includes(categoryName);
-        }
-        return false;
-    };
+    // Filter clubs by search term
+    const filteredClubs = clubs.filter((club) =>
+        club.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
 
-    // Flokkar klúbba í mismunandi hópa eftir einkennum
-    const featuredClubs = clubs.filter(club => club.featured);
-    const sportsClubs = clubs.filter(club => normalizeCategory(club, 'sports'));
-    const outdoorClubs = clubs.filter(club => normalizeCategory(club, 'outdoors'));
-    const indoorClubs = clubs.filter(club => normalizeCategory(club, 'indoors'));
+    // Create categories dynamically based on the clubs' category fields
+    const categories = Array.from(new Set(clubs.map(club => club.category))).filter(Boolean);
+
+    // Categorize clubs based on their category field
+    const categorizedClubs = categories.reduce((acc, category) => {
+        acc[category] = filteredClubs.filter((club) => club.category === category);
+        return acc;
+    }, {});
+
+    // Recommend clubs based on user preferences
+    const recommendedClubs = categories.reduce((acc, category) => {
+        // Ensure category is a string before calling .toLowerCase()
+        const categoryString = typeof category === 'string' ? category : String(category);
+        
+        // Safely compare category names
+        if (userPreferences.map(p => p.toLowerCase()).includes(categoryString.toLowerCase())) {
+            acc[category] = categorizedClubs[category];
+        }
+        return acc;
+    }, {});
+
+    // Render Loading or Error state
+    if (isLoading) {
+        return <div>Loading...</div>;
+    }
+
+    if (error) {
+        return <div>{error}</div>;
+    }
+
+    // Helper Component to display a list of clubs
+    const ClubList = ({ title, clubs }) => {
+        if (!clubs.length) return null;
+        return (
+            <div>
+                <h2>{title}</h2>
+                <div className={styles.clubRow}>
+                    {clubs.map((club) =>
+                        memberOfClubs(
+                            club.name,
+                            club.description,
+                            club.img,
+                            club.id,
+                            false
+                        )
+                    )}
+                </div>
+            </div>
+        );
+    };
 
     return (
         <div>
-            {/* searchbar */}
+            {/* Search Bar */}
             <input
                 type="text"
                 placeholder="Search Clubs"
-                onChange={(e) => setSearchTerm(e.target.value)} //Þetta update-as þegar þu skrifar hverja stafi
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+                className={styles.searchBar}
             />
 
-            <h2>Featured Clubs</h2>
-            <div className={styles.clubRow}>
-                {featuredClubs
-                    .filter(club => club.name.toLowerCase().includes(searchTerm.toLowerCase()))
-                    .map(club => memberOfClubs(club.name, club.description, club.img, club.id))}
+            {/* Display All Clubs */}
+            <ClubList title="All Clubs" clubs={filteredClubs} />
+
+            {/* Display clubs by dynamically inferred categories */}
+            <div className={styles.recommendedClubs}>
+                {categories.map((category) => (
+                    <ClubList
+                        key={category}
+                        title={`${category} Clubs`}
+                        clubs={categorizedClubs[category]}
+                    />
+                ))}
             </div>
 
-            <h2>Sports Clubs</h2>
-            <div className={styles.clubRow}>
-                {sportsClubs
-                    .filter(club => club.name.toLowerCase().includes(searchTerm.toLowerCase()))
-                    .map(club => memberOfClubs(club.name, club.description, club.img, club.id))}
-            </div>
-
-            <h2>Outdoor Clubs</h2>
-            <div className={styles.clubRow}>
-                {outdoorClubs
-                    .filter(club => club.name.toLowerCase().includes(searchTerm.toLowerCase()))
-                    .map(club => memberOfClubs(club.name, club.description, club.img, club.id))}
-            </div>
-
-            <h2>Indoor Clubs</h2>
-            <div className={styles.clubRow}>
-                {indoorClubs
-                    .filter(club => club.name.toLowerCase().includes(searchTerm.toLowerCase()))
-                    .map(club => memberOfClubs(club.name, club.description, club.img, club.id))}
+            {/* Recommended Clubs */}
+            <div>
+                <h2>Recommended for You</h2>
+                {Object.keys(recommendedClubs).map((category) => (
+                    <ClubList
+                        key={category}
+                        title={`Recommended ${category} Clubs`}
+                        clubs={recommendedClubs[category]}
+                    />
+                ))}
             </div>
         </div>
     );

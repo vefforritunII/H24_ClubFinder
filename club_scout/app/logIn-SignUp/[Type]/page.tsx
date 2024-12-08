@@ -1,10 +1,12 @@
-import { sign_up,sign_in } from "@/app/library/actions" //þarf ekki .tsx
+import { sign_up,sign_in,getPreferences } from "@/app/library/actions" //þarf ekki .tsx
 import { redirect } from "next/navigation"
 import { cookies } from "next/headers"
+import errorMessage from "@/app/components/errorMessage"
 
-export function Form(props :{type: string}){
+export async function Form(props :{type: string}){
 
   const {type} = props
+  const preferences = await getPreferences()
 
   if (type==="log_in"){
     return(
@@ -36,6 +38,11 @@ export function Form(props :{type: string}){
         <h3>Re-enter your password</h3>
         <input type="password" id="passwordCheck" name="passwordCheck" required></input>
 
+        <label htmlFor="categories">categories:</label>
+        <div id="categories">{/* við getum breyt þetta til option element og finna eih leið til að sækja multiple values */}
+        {preferences?.map((a)=><div key={a.id}><input type="checkbox" name={a.preference}/> {a.preference}</div>)}
+        </div>
+
         <button type="submit">Sign up</button>
 
         <p>Already have an account? <a href="/logIn-SignUp/log_in">Log in</a></p> {/* Link to log-in */}
@@ -54,15 +61,21 @@ export default async function Page({params}: {params: Promise<{Type:string}>}){
 
   const type = (await params).Type//nafnið af þetta og nafnið á dynamic route þarf að vera eins
   const cookie = await cookies()
+  let error = <div></div>
 
   if (cookie.has("haveSignedIn")){
     redirect("/profile/"+cookie.get("haveSignedIn")?.value)
+  }
+
+  if (cookie.has("error")){
+    error = await errorMessage(String(cookie.get("error")?.value))
   }
 
   return (
     <div>
       <h1>ClubScout</h1>
       <Form type={type} />
+      {error}
     </div>
 )
 }

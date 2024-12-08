@@ -6,7 +6,7 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
     const user = (await params).User
     const userData = await getUserData(user)
     const prefernces = await getPreferences()
-    const usersPrefences = await getUserPreferences()
+    const usersPrefences = await getUserPreferences(userData.id)
 
     let preferencesOfUser = []
 
@@ -25,13 +25,18 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
 
             {/* controlled component shit kannski þarf að laga þetta (fyrir inputs ekki formið sjálf) */}
             <form action={changeInfoAboutUser}>
-
+                
                 <input type="hidden" name='old_username' defaultValue={userData.user_name}/>
 
-                <input name='username' defaultValue={userData.user_name} />
+                <label htmlFor="username">username:</label>
+                <input name='username' id="username" defaultValue={userData.user_name} />
 
-                <input type='email' name="email" defaultValue={userData.email} />
+                <label htmlFor="email">email:</label>
+                <input type='email' id="email" name="email" defaultValue={userData.email} />
+
                 
+                <label htmlFor="preferences">preferences:</label>{/* við getum breyt þetta til option element og finna eih leið til að sækja multiple values */}
+                <div id="preferences">
                 {prefernces?.map((a) => {
 
                     if (preferencesOfUser.includes(a.id)){
@@ -40,6 +45,7 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
 
                     return <div key={a.id}><input type="checkbox" name={a.preference}/> {a.preference}</div>
                     })}
+                </div>
 
                 {/*<input type="file" name="profile_file" id="abc"/>  // við mun örugg bætt við buckets á eftir*/}
 
