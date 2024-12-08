@@ -1,11 +1,11 @@
 "use server";
-
 import { supabase } from "@/app/library/supabaseClients";
-
 import { redirect } from "next/navigation"
 import { revalidatePath } from 'next/cache';
 import { cookies } from 'next/headers'
 import memberOfClubs from "../components/profileMemberClubs";
+import { useId } from "react";
+import { console } from "inspector";
 
 
 export async function sign_up(formdata: FormData){
@@ -342,3 +342,31 @@ export async function getUserPreferences(){
 
     return data
 }
+export async function UploadUserImg(formdata: FormData) {
+    console.log("run")
+    const cookie = await cookies()
+    const user = await getUserData(cookie.get("haveSignedIn")?.value)
+    const img = formdata.get('file')
+    try {
+        const { data, error } = await supabase.storage
+        .from('profile pic')
+        .upload(img.name, img);
+        console.log("img data ",data)
+        console.log("img error ",error)
+        const imgDtata = data
+        if(!error){
+            const { data, error } = await supabase
+            .from('profiles')
+            .update({ img: img.name })
+            .eq('id',user.id)
+            .select()
+            console.log("profile data ",data)
+            console.log("profile error ",error)
+        }
+      return { success: true };
+    } catch (err) {
+      console.error('Error:', err.message);
+      return { success: false, message: err.message };
+    }
+  }
+  
