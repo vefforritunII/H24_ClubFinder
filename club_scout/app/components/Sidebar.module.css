@@ -10,8 +10,8 @@ body {
   left: 0;
   height: 100%;
   width: 256px; 
-  background-color: var(--light-background);
-  box-shadow: rgba(0, 0, 0, 0.2) 2px 0px 10px;
+  background-color: var(--background);
+  /*box-shadow: rgba(0, 0, 0, 0.2) 2px 0px 10px;*/
   z-index: 1100;
 
   display: flex;
@@ -19,6 +19,8 @@ body {
   gap: 16px;
 
   padding: 16px;
+  
+  border-right: var(--text) solid 1px;
 
   transition: transform 0.3s ease-in-out;
 }
@@ -38,7 +40,7 @@ body {
 .sidebar_element {
   padding: 8px;
   
-  color: var(--light-text-secondary);
+  color: var(--text-secondary);
 
   border-radius: 8px;
 
@@ -48,7 +50,7 @@ body {
 }
 
 .sidebar_title {
-  color: var(--light-text);
+  color: var(--text);
 
   font-size: 16px;
   font-weight: 700;
@@ -58,12 +60,12 @@ body {
   font-size: 14px;
   font-weight: 600;
   
-  color: var(--light-text-secondary);
+  color: var(--text-secondary);
 }
 
 .sidebar_link:hover {
-  color: var(--light-text);
-  background-color: var(--light-selection);
+  color: var(--text);
+  background-color: var(--selection);
 }
 
 .sidebar_link_icon {

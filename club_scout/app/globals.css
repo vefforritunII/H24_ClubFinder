@@ -1,19 +1,16 @@
 /*globals.css*/
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --background: #fffeeb;
+  --text: #000000;
+  --text-secondary: #707070;
 
-  --light-background: #fffeeb;
-  --light-text: #000000;
-  --light-text-secondary: #707070;
-
-  --light-selection: #d1d0c3;
+  --selection: #d1d0c3;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    /*--background: #0a0a0a;
+    --foreground: #ededed;*/
   }
 }
 
@@ -28,7 +25,7 @@ body {
 }
 
 body {
-  color: var(--foreground);
+  color: var(--text);
   background: var(--background);
   font-family: 'Inter', Arial, Helvetica, sans-serif;
   -webkit-font-smoothing: antialiased;
