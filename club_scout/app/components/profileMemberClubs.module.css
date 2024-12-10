@@ -7,7 +7,7 @@
   gap: 16px;
 
   /*border: 1px solid var(--text);*/
-  background-color: var(--selection);
+  /*background-color: var(--selection);*/
   border-radius: 8px;
 }
 
@@ -24,7 +24,8 @@
   flex-direction: column;
   gap: 16px;
 
-  padding: 16px 0px;
+  width: 100%;
+  padding: 16px 16px 16px 0px;
 }
 
 .club_title {
@@ -34,4 +35,15 @@
 
 .club_description {
   font-size: 14px;
+}
+
+
+.club_actions {
+  margin-top: auto;
+
+  display: flex;
+}
+
+.club_action_details {
+  margin-left: auto;
 }
