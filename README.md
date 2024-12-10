@@ -38,6 +38,14 @@ Hugmyndagerðin og hönnunin var aðallega unnin í [Figma skjali](https://www.f
 ![figma_worksheet](https://github.com/user-attachments/assets/978b6add-d635-473b-bdf2-00134cc5da54)
 
 # Look-ið á síðunni
+![Skjámynd 2024-12-10 142615](https://github.com/user-attachments/assets/2bc2a999-ec3b-4b04-af8b-0cd6c89785e4) ![Skjámynd 2024-12-10 142731](https://github.com/user-attachments/assets/0fa163be-d60c-4458-b5b6-ace320b29e08) ![Skjámynd 2024-12-10 142825](https://github.com/user-attachments/assets/8f7bf46a-fc8f-4a9f-8a51-0f0daf9c8b97) ![Skjámynd 2024-12-10 142851](https://github.com/user-attachments/assets/190d8b0d-b544-4426-b394-a03d6cfd04d8)![Skjámynd 2024-12-10 143139](https://github.com/user-attachments/assets/34485d62-9696-46aa-a3ea-3b9bdaa14ff9)
+![Skjámynd 2024-12-10 143119](https://github.com/user-attachments/assets/8aaa2471-908c-434c-8ac1-7ee31516f18c)
+![Skjámynd 2024-12-10 143049](https://github.com/user-attachments/assets/0b872a57-f167-4ece-b6f9-1c256c5a4f68)
+![Skjámynd 2024-12-10 143750](https://github.com/user-attachments/assets/5accea85-91cf-40da-9c2b-b3c9d963826b)
+![Skjámynd 2024-12-10 143226](https://github.com/user-attachments/assets/0fae0c8e-b875-4b37-9e48-3928aa9b7efb)
+
+
+
 
 
 # Hvað við eigum eftir að gera
