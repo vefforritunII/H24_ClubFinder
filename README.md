@@ -1,5 +1,10 @@
 # Club scout
 
+# Devs
+Lukas, Þórður, Mateusz, Ágúst.
+# Skóli og áfangi
+VEFÞ3VÞ05DU-Hát, Tölvubraut, Tækniskólinn.
+
 # Lýsing
 
 **Þetta app er gert fyrir notendur sem vilja tilheyra samfélagi sem hefur sama áhuga og notandinn á ákveðnum hlutum eins og tölvuleikjum, íþróttum, borðspilum o.s.frv. Notendur finna sér klúbba til að ganga í og ​​mæta síðan í reglulega dagskrá eða viðburði til að taka þátt í þeirri ákveðnu starfsemi sem klúbburinn snýst um og vonandi eignast nýja vini í leiðinni.**
@@ -26,7 +31,13 @@ Hektor langaði að finna fólk sem gætu spilað með honum og tveimur vinum ha
 léttara að revrenca hvern part og með hvað**
 ![Skjámynd 2024-12-10 130943](https://github.com/user-attachments/assets/f2c7ffd3-faeb-4711-82dc-82b7d547836f)
 
+
 ## Vefsíðuhönnun
 
 Hugmyndagerðin og hönnunin var aðallega unnin í [Figma skjali](https://www.figma.com/design/XIAouC0mruhxk2YL9AkZze/Untitled?node-id=0-1&t=PObDR9zmyQLpmLMF-1). Í skjalinu eru allskonar hugmyndir um uppsetningu, svo sem topbar, sidebar, eða bæði, lita- og leturhugmyndir, og vefsíðu uppsetning. Mikið af því komst ekki í lokaverkefnið, en þannig virkar það. Vefsíðan sjálf er svo unnin í CSS án sérstaks CSS framework. Passað er upp á samræmi í litum með t.d. variables, því hugmyndin var að hafa light-dark mode kerfi sem náðist ekki að ljúka.
 ![figma_worksheet](https://github.com/user-attachments/assets/978b6add-d635-473b-bdf2-00134cc5da54)
+
+# Look-ið á síðunni
+
+
+# Hvað við eigum eftir að gera
