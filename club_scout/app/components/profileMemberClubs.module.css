@@ -1,9 +1,10 @@
 .club_element {
   flex-shrink: 0;
   width: 375px;
-  height: 200px;
+  height: auto;
 
   display: flex;
+  flex-direction: column;
   gap: 16px;
 
   /*border: 1px solid var(--text);*/
@@ -12,20 +13,27 @@
 }
 
 .club_element img {
-  width: 114px;
-  height: 100%;
+  /*width: 114px;
+  height: 100%;*/
+  width: 100px;
+  height: 100px;
+
   object-fit: cover;
 
   border-radius: 8px;
 }
 
-.club_details {
+.club_info {
+  display: flex;
+  gap: 16px;
+}
+
+.club_text {
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  justify-content: center;
 
   width: 100%;
-  padding: 16px 16px 16px 0px;
 }
 
 .club_title {
@@ -39,9 +47,8 @@
 
 
 .club_actions {
-  margin-top: auto;
-
   display: flex;
+  gap: 16px;
 }
 
 .club_action_details {
