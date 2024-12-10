@@ -2,6 +2,7 @@ import { getUserData,createClub,getPreferences, editClub, getClubData, club_pref
 import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 import { isNumberObject } from "util/types"
+import styles from "@/app/button.module.css"
 
 export default async function Page({params}: {params:Promise<{User:string}>}){
     const cookie = await cookies()
@@ -15,12 +16,13 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
         if (ownedClubsType === "newClub"){
 
             return (<div>
-                <h1>test with new club!</h1>
+                <h1>creating a new club</h1>
                 
-                <form action={createClub}>
+                <form action={createClub} style={{display: "grid",gridTemplateColumns: "1fr",width: "10%"}}>
 
                     <label htmlFor="clubName">club name:</label>
                     <input name="clubName" id="clubName" required/>
+
 
                     <label htmlFor="description">description:</label>
                     <textarea name="description" id="description" required></textarea>
@@ -33,7 +35,7 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
                     {prefernces?.map((a)=><div key={a.id}><input type="checkbox" name={a.preference}/> {a.preference}</div>)}
                     </div>
 
-                    <button type="submit">create club!</button>
+                    <button type="submit" className={styles.submitButton}>create club!</button>
                 </form>
             </div>)
         }
@@ -50,9 +52,8 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
             }
 
             return (<div>
-                <h1>test with already made club!</h1>
-                <h3>
-                <form action={editClub}>
+                <h1>Changing {clubData.name}</h1>
+                <form action={editClub} style={{display: "grid",gridTemplateColumns: "1fr",width: "10%"}}>
 
                     <input type="hidden" name="clubId" defaultValue={ownedClubsType} />
 
@@ -75,10 +76,8 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
                         return <div key={a.id}><input type="checkbox" name={a.preference}/> {a.preference}</div>
                         })}
                     </div>
-
-                    <button type="submit">Save changes!</button>
+                    <button type="submit" className={styles.submitButton}>Save changes!</button>
                 </form>
-                </h3>
             </div>)}
         
     
