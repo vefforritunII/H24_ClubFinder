@@ -1,5 +1,7 @@
 
 import { getUserData,changeInfoAboutUser,changePassword,getPreferences, getUserPreferences} from "@/app/library/actions"
+import styles from "@/app/button.module.css"
+
 
 export default async function Page({params}: {params:Promise<{User:string}>}){
 
@@ -24,7 +26,7 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
             <h3>change info about yourself</h3>
 
             {/* controlled component shit kannski þarf að laga þetta (fyrir inputs ekki formið sjálf) */}
-            <form action={changeInfoAboutUser}>
+            <form action={changeInfoAboutUser} style={{display: "grid",gridTemplateColumns: "1fr",width: "10%"}}>
                 
                 <input type="hidden" name='old_username' defaultValue={userData.user_name}/>
 
@@ -51,19 +53,25 @@ export default async function Page({params}: {params:Promise<{User:string}>}){
 
                 {/* kannski bætt við file input eða url input */}
 
-                <button type='submit'>save Changes</button>
+                <button type='submit' className={styles.submitButton}>save Changes</button>
             </form>
 
             <h2>change password</h2>
-            <form action={changePassword}>
+            <form action={changePassword} style={{display: "grid",gridTemplateColumns: "1fr",width: "10%"}}>
 
                 <input type='hidden' name="username" value={userData.user_name} />
 
-                <input type='password' name='password' />
+                <div>
+                <label htmlFor="password">New password</label>
+                <input type='password' id="password" name='password' />
+                </div>
+                
+                <div>
+                <label htmlFor="passworCheck">Re-enter password</label>
+                <input type='password' id="passwordCheck" name="passwordCheck" />
+                </div>
 
-                <input type='password' name="passwordCheck" />
-
-                <button type='submit'>Change password</button>
+                <button type='submit' className={styles.submitButton}>Change password</button>
 
             </form>
         </div>

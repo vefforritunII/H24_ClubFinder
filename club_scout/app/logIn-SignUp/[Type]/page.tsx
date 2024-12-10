@@ -2,6 +2,8 @@ import { sign_up,sign_in,getPreferences } from "@/app/library/actions" //þarf e
 import { redirect } from "next/navigation"
 import { cookies } from "next/headers"
 import errorMessage from "@/app/components/errorMessage"
+import styles from "@/app/button.module.css"
+
 
 export async function Form(props :{type: string}){
 
@@ -18,7 +20,7 @@ export async function Form(props :{type: string}){
         <h3>Password</h3>
         <input type="password" id="password" name="password" required></input>
 
-        <button type="submit">Sign in</button>
+        <button type="submit" className={styles.submitButton}>Sign in</button>
 
         <p>Don't have an account? <a href="/logIn-SignUp/sign_up">Sign up</a></p> {/* Link to sign-up */}
 
@@ -43,7 +45,7 @@ export async function Form(props :{type: string}){
         {preferences?.map((a)=><div key={a.id}><input type="checkbox" name={a.preference}/> {a.preference}</div>)}
         </div>
 
-        <button type="submit">Sign up</button>
+        <button type="submit" className={styles.submitButton}>Sign up</button>
 
         <p>Already have an account? <a href="/logIn-SignUp/log_in">Log in</a></p> {/* Link to log-in */}
 
