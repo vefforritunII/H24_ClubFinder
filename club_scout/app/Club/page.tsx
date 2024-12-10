@@ -94,7 +94,7 @@ export default function DiscoverPage() {
                 placeholder="Search Clubs"
                 value={searchTerm}
                 onChange={(e) => setSearchTerm(e.target.value)}
-                className={styles.searchBar}
+                className={styles.search_bar}
             />
 
             {/* Display All Clubs */}
