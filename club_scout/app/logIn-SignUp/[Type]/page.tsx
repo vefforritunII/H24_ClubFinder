@@ -12,7 +12,7 @@ export async function Form(props :{type: string}){
 
   if (type==="log_in"){
     return(
-      <form style={{margin: "auto",width: "50%", textAlign: "center"}} action={sign_in}>
+      <form style={{display: "grid",gridTemplateColumns:"1fr",justifyItems:"center",margin: "auto",width: "10%", textAlign: "center"}} action={sign_in}>
         
         <h3>Username</h3>
         <input id="username" name="username" required></input>
@@ -29,7 +29,7 @@ export async function Form(props :{type: string}){
   }
   else if (type==="sign_up"){
     return(
-      <form style={{margin: "auto",width: "50%", textAlign: "center"}} action={sign_up}>
+      <form style={{display: "grid",gridTemplateColumns:"1fr",justifyItems:"center",margin: "auto",width: "50%", textAlign: "center"}} action={sign_up}>
 
         <h3>Username</h3>
         <input id="username" name="username" required></input>
