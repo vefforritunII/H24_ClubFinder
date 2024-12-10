@@ -26,5 +26,6 @@ Hektor langaði að finna fólk sem gætu spilað með honum og tveimur vinum ha
 léttara að revrenca hvern part og með hvað**
 ![Skjámynd 2024-12-10 130943](https://github.com/user-attachments/assets/f2c7ffd3-faeb-4711-82dc-82b7d547836f)
 
+# Vefsíðuhönnun
 
-
+Hugmyndagerðin og hönnunin var aðallega unnin í [Figma skjali](https://www.figma.com/design/XIAouC0mruhxk2YL9AkZze/Untitled?node-id=0-1&t=PObDR9zmyQLpmLMF-1). Í skjalinu eru allskonar hugmyndir um uppsetningu, svo sem topbar, sidebar, eða bæði, lita- og leturhugmyndir, og vefsíðu uppsetning. Mikið af því komst ekki í lokaverkefnið, en þannig virkar það. Vefsíðan sjálf er svo unnin í CSS án sérstaks CSS framework. Passað er upp á samræmi í litum með t.d. variables, því hugmyndin var að hafa light-dark mode kerfi sem náðist ekki að ljúka.
