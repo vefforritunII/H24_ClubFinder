@@ -5,6 +5,10 @@
 
   display: flex;
   gap: 16px;
+
+  /*border: 1px solid var(--text);*/
+  background-color: var(--selection);
+  border-radius: 8px;
 }
 
 .club_element img {
