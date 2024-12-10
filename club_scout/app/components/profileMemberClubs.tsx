@@ -3,7 +3,7 @@ import styles from "./profileMemberClubs.module.css";
 
 // return-a club með nafn,description og logo-ið og id í key svo hún mun ekki væla
 export default function memberOfClubs(name: string,descreption:string,logo:string,id:string,owner:boolean,username:string = "none"){
-    if (owner === true){
+    if (owner === false){
         return(
             <div className={styles.club_element} key={id}>
                 <div className={styles.club_info}>
@@ -20,7 +20,7 @@ export default function memberOfClubs(name: string,descreption:string,logo:strin
             </div>
         )
     }
-    else if (owner === false){
+    else if (owner === true){
         return(
             <div className={styles.club_element} key={id}>
                 <div className={styles.club_info}>
