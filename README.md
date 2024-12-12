@@ -45,7 +45,3 @@ Hugmyndagerðin og hönnunin var aðallega unnin í [Figma skjali](https://www.f
 ![Skjámynd 2024-12-10 143226](https://github.com/user-attachments/assets/0fae0c8e-b875-4b37-9e48-3928aa9b7efb)
 
 
-
-
-
-# Hvað við eigum eftir að gera
